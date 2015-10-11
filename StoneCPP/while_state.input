@@ -1,0 +1,14 @@
+{
+
+  if (variable) { a = b ; }
+
+  while (10) { 
+
+    if (2) { b = 10 ; }
+    if (x) { c = x ; } else { d = 10 ; }
+
+  }
+
+  variable = 42;
+
+}
