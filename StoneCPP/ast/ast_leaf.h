@@ -34,6 +34,8 @@ public:
 
     ASTLeaf(std::shared_ptr<Token> t): token(t) {}
 
+    ASTLeaf(): token(nullptr) {}
+
     std::shared_ptr<Token> get_token()
     {
         return token;

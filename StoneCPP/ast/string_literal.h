@@ -7,6 +7,9 @@
 
 class StringLiteral : public ASTLeaf {
 public:
+    //StringLiteral() = default;
+    StringLiteral() = default;
+
     StringLiteral(std::shared_ptr<Token> t) : ASTLeaf(t) {}
 
     std::string value() { return get_token()->getText(); }

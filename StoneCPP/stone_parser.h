@@ -145,10 +145,46 @@ struct StoneGrammar
             = '{' >> -statement >> *((qi::lit(';') | '\n') >> -statement) >> '}'
             ;
 
+        /*
         expression
             = factor >> *(op >> factor)
             ;
+        */
 
+        expression
+            = '(' >>  expression >> ')'
+            | equal
+            | value
+            ;
+
+        equal
+            = lowerGreater >> -(equalOp >> lowerGreater)
+            ;
+
+        lowerGreater
+            = shift >> -(lowerGreaterOp >> shift)
+            ;
+       
+        shift
+            = addSub >> -(shiftOp >> addSub)
+            ;
+
+        addSub
+            = multDivMod >> -(addSubOp >> multDivMod)
+            ;
+
+        multDivMod
+            = value >> -(multDivModOp >> value)
+            ;
+
+        value
+            = '-' >> primary
+            | '+' >> primary
+            | '!' >> primary
+            | primary
+            ;
+
+        /*
         factor
             = '-' >> primary
             | primary
@@ -162,9 +198,10 @@ struct StoneGrammar
             | qi::lit('=')
             | qi::lit("||")
             ;
+        */
 
         primary
-            = '(' >> expression >> ')'
+        //    = '(' >> expression >> ')'
             | tok.identifier[std::cout << labels::_1 << std::endl]
             | tok.number[std::cout << labels::_1 << std::endl]
             | tok.string_literal[std::cout <<labels::_1 << std::endl]
@@ -177,9 +214,10 @@ struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > assignment, if_stmt;
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > while_stmt;
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > simple_stmt;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > factor;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer> > factor;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer> > value;
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > primary;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > op;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer> > op;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     qi::symbols<char, BinaryOperator> equalOp, lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
 
