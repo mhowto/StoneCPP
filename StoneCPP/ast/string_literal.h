@@ -7,12 +7,10 @@
 
 class StringLiteral : public ASTLeaf {
 public:
-    //StringLiteral() = default;
     StringLiteral() = default;
+    StringLiteral(std::string s) : string_literal(s) {}
 
-    StringLiteral(std::shared_ptr<Token> t) : ASTLeaf(t) {}
-
-    std::string value() { return get_token()->getText(); }
+    std::string value() { return string_literal; }
 
     virtual std::string toString() override
     {
@@ -20,6 +18,9 @@ public:
         oss << "\"" << value() << "\"";
         return oss.str();
     }
+
+private:
+    std::string string_literal;
 };
 
 #endif

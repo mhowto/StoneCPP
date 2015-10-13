@@ -7,8 +7,8 @@
 #include <memory>
 
 class ASTLeaf : public ASTree {
-protected:
-    std::shared_ptr<Token> token;
+//protected:
+//    std::shared_ptr<Token> token;
 
 public:
     // Inherited via ASTree
@@ -29,9 +29,11 @@ public:
 
     virtual std::string location() override
     {
-        return std::to_string(token->getLineNumber()) + ':' + std::to_string(token->getColumnNumber());
+        //return std::to_string(token->getLineNumber()) + ':' + std::to_string(token->getColumnNumber());
+        return "unknown";
     }
 
+    /*
     ASTLeaf(std::shared_ptr<Token> t): token(t) {}
 
     ASTLeaf(): token(nullptr) {}
@@ -40,5 +42,6 @@ public:
     {
         return token;
     }
+    */
 };
 #endif

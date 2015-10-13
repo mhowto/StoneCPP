@@ -5,9 +5,10 @@
 
 class NumberLiteral : public ASTLeaf {
 public:
-    NumberLiteral(std::shared_ptr<Token> t) : ASTLeaf(t) {}
+    NumberLiteral() = default;
+    NumberLiteral(int num): number(num) {}
 
-    int value() { return  get_token()->getValue(); }
+    int value() { return  number; }
 
     virtual std::string toString() override
     {
@@ -15,6 +16,9 @@ public:
         oss << value();
         return oss.str();
     }
+
+private:
+    int number;
 };
 
 #endif

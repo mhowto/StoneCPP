@@ -1,8 +1,11 @@
 #ifndef __STONE_PARSER_H
 #define __STONE_PARSER_H
 
+#define BOOST_SPIRIT_USE_PHOENIX_V3
+
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/phoenix.hpp>
 #include <boost/spirit/include/lex_lexertl.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 
@@ -21,6 +24,7 @@
 
 namespace qi = boost::spirit::qi;
 namespace lex = boost::spirit::lex;
+namespace phx = boost::phoenix;
 
 template <typename Lexer>
 struct StoneToken : lex::lexer<Lexer>
@@ -62,16 +66,23 @@ struct StoneToken : lex::lexer<Lexer>
     lex::token_def<unsigned int> number;
 };
 
-BOOST_FUSION_ADAPT_STRUCT(BinaryOperation, (BinaryOperator, op), (std::vector<ASTree*>, children))
 
 typedef boost::variant <
-    StringLiteral,
-    NumberLiteral,
-    Name,
-    UnaryOperation,
-    BinaryOperation
+    boost::recursive_wrapper<StringLiteral>,
+    boost::recursive_wrapper<NumberLiteral>,
+    boost::recursive_wrapper<Name>,
+    boost::recursive_wrapper<UnaryOperation>,
+    boost::recursive_wrapper<BinaryOperation>
 > expression_type;
 
+typedef boost::variant <
+    Name,
+    StringLiteral,
+    NumberLiteral
+> primary_type;
+
+
+//BOOST_FUSION_ADAPT_STRUCT(BinaryOperation, (BinaryOperator, op), (std::vector<ASTree*>, children))
 template <typename Iterator, typename Lexer>
 struct StoneGrammar
     : qi::grammar<Iterator, qi::in_state_skipper<Lexer> >
@@ -80,7 +91,7 @@ struct StoneGrammar
     StoneGrammar(TokenDef const& tok)
         : StoneGrammar::base_type(program)
     {
-        namespace labels = qi::labels;
+        using namespace qi::labels;
 
         equalOp.add
             ("==", BinaryOperator::EQUAL)
@@ -158,30 +169,30 @@ struct StoneGrammar
             ;
 
         equal
-            = lowerGreater >> -(equalOp >> lowerGreater)
+            = lowerGreater[_val = _1] >> -(equalOp >> lowerGreater)[_val = phx::construct<BinaryOperation>(_1, _val, _2)]
             ;
 
         lowerGreater
-            = shift >> -(lowerGreaterOp >> shift)
+            = shift[_val = _1] >> -(lowerGreaterOp >> shift)[_val = phx::construct<BinaryOperation>(_1, _val, _2)]
             ;
        
         shift
-            = addSub >> -(shiftOp >> addSub)
+            = addSub[_val = _1] >> -(shiftOp >> addSub)[_val = phx::construct<BinaryOperation>(_1, _val, _2)]
             ;
 
         addSub
-            = multDivMod >> -(addSubOp >> multDivMod)
+            = multDivMod[_val = _1] >> -(addSubOp >> multDivMod)[_val = phx::construct<BinaryOperation>(_1, _val, _2)]
             ;
 
         multDivMod
-            = value >> -(multDivModOp >> value)
+            = value[_val = _1] >> -(multDivModOp >> value)[_val = phx::construct<BinaryOperation>(_1, _val, _2)]
             ;
 
         value
-            = '-' >> primary
-            | '+' >> primary
-            | '!' >> primary
-            | primary
+            = '-' >> primary[_val = phx::construct<UnaryOperation>(UnaryOperator::MINUS, _1)]
+            | ('+' >> primary)[_val = phx::construct<UnaryOperation>(UnaryOperator::PLUS, _1)]
+            | ('!' >> primary)[_val = phx::construct<UnaryOperation>(UnaryOperator::NOT, _1)]
+            | (primary)
             ;
 
         /*
@@ -201,10 +212,13 @@ struct StoneGrammar
         */
 
         primary
-        //    = '(' >> expression >> ')'
-            | tok.identifier[std::cout << labels::_1 << std::endl]
-            | tok.number[std::cout << labels::_1 << std::endl]
-            | tok.string_literal[std::cout <<labels::_1 << std::endl]
+            //= '(' >> expression >> ')'
+            = tok.identifier[_val = phx::construct<Name>(_1)]
+           // | tok.identifier[std::cout << labels::_1 << std::endl]
+            | tok.number[_val = phx::construct<NumberLiteral>(_1)]
+            //| tok.number[std::cout << labels::_1 << std::endl]
+            | tok.string_literal[_val = phx::construct<StringLiteral>(_1)]
+            //| tok.string_literal[std::cout <<labels::_1 << std::endl]
             ;
     }
 
@@ -214,16 +228,15 @@ struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > assignment, if_stmt;
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > while_stmt;
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > simple_stmt;
-    //qi::rule<Iterator, qi::in_state_skipper<Lexer> > factor;
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > value;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > primary;
-    //qi::rule<Iterator, qi::in_state_skipper<Lexer> > op;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > primary;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     qi::symbols<char, BinaryOperator> equalOp, lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
 
     //  the expression is the only rule having a return value
     //qi::rule<Iterator, expression_type(), qi::in_state_skipper<Lexer> >  expression;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > expression;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > expression;
 };
 
 #endif
