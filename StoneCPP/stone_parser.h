@@ -45,8 +45,8 @@ struct StoneToken : lex::lexer<Lexer>
             | '='
             | "==" | "<=" | ">="
             | '>' | '<' | "&&"
-            | '!' | '^' | '|' | '~' | '&' 
-            | '%' 
+            | '!' | '^' | '|' | '~' | '&'
+            | '%'
             | '\'' | ',' | '"' | '\n' | ';' | '.' | '_'
             ;
 
@@ -94,6 +94,9 @@ struct StoneGrammar
     {
 //        using namespace qi::labels;
 
+        andOp.add
+            ("&", BinaryOperator::AND)
+            ;
         equalOp.add
             ("==", BinaryOperator::EQUAL)
             ("!=", BinaryOperator::NOT_EQUAL)
@@ -235,7 +238,8 @@ struct StoneGrammar
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > equal, lowerGreater, shift, addSub, multDivMod;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > equal, lowerGreater, shift, addSub, multDivMod;
-    qi::symbols<char, BinaryOperator> equalOp, lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
+    qi::symbols<char, BinaryOperator> commaOp, assignOp, orOp, andOp, bitwiseOrOp,bitwiseXorOp, bitwiseAndOp, equalOp,
+                                    lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
 
     //  the expression is the only rule having a return value
     //qi::rule<Iterator, expression_type(), qi::in_state_skipper<Lexer> >  expression;

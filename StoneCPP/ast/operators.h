@@ -30,6 +30,8 @@ enum class BinaryOperator
     EQUAL, NOT_EQUAL,
     LOWER, LOWER_EQUAL,
     GREATER, GREATER_EQUAL,
+    ASSIGN, OR, AND,
+    BITWISE_AND, BITWISE_OR, BITWISE_XOR
 };
 
 std::ostream& operator<<(std::ostream& os, const BinaryOperator op)
@@ -49,6 +51,11 @@ std::ostream& operator<<(std::ostream& os, const BinaryOperator op)
     case BinaryOperator::LOWER_EQUAL:   return os << "<=";
     case BinaryOperator::GREATER:       return os << ">";
     case BinaryOperator::GREATER_EQUAL: return os << ">=";
+    case BinaryOperator::ASSIGN:        return os << "-";
+    case BinaryOperator::OR:            return os << "||";
+    case BinaryOperator::AND:           return os << "&&";
+    , AND,
+    BITWISE_AND, BITWISE_OR, BITWISE_XOR
     }
     assert(false);
 }

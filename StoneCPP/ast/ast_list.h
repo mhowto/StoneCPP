@@ -12,7 +12,7 @@ protected:
 public:
     virtual int num_children() override
     {
-        return children.size();
+        return static_cast<int>(children.size());
     }
 
     // Inherited via ASTree

@@ -11,7 +11,7 @@ private:
     UnaryOperator op;
 
 public:
-    UnaryOperation(UnaryOperator op, ASTree* operation): op(op), ASTList(operation) {}
+    UnaryOperation(UnaryOperator op, ASTree* operation): ASTList(operation), op(op) {}
 
     UnaryOperator get_op()
     {

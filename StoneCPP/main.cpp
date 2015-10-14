@@ -18,7 +18,8 @@ int main() {
 
     // TODO: Your test code here
     //std::string str(read_from_file("while_state.input"));
-    std::string str = "even || \"kkk\"\n";
+    //std::string str = "even || \"kkk\"\n";
+    std::string str = "even = 3\n";
     //std::string str = "even || 0\n";
     //std::string str = "even = 0 odd =0 i =1";
     //odd = 0

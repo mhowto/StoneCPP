@@ -11,7 +11,7 @@ private:
     BinaryOperator op;
 
 public:
-    BinaryOperation(BinaryOperator op, ASTree* lhs, ASTree* rhs):  op(op), ASTList({lhs, rhs}) {}
+    BinaryOperation(BinaryOperator op, ASTree* lhs, ASTree* rhs): ASTList({lhs, rhs}), op(op) {}
 
     BinaryOperator get_op()
     {
