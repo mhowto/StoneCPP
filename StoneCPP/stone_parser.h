@@ -229,7 +229,7 @@ struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > assignment, if_stmt;
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > while_stmt;
     qi::rule<Iterator, qi::in_state_skipper<Lexer> > simple_stmt;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > value;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > value;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > primary;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;

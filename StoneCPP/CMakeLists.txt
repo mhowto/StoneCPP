@@ -17,7 +17,7 @@ if (("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR ("${CMAKE_CXX_COMPILER_ID}"
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpointer-arith")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wshadow")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wwrite-strings")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
   #set(docoptso lib/libdocopt.so)
 #elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

@@ -36,6 +36,8 @@ public:
         assert(this->num_children() == 2);
         std::ostringstream oss;
         oss << this->child(0)->toString() << op << this->child(1)->toString();
+
+        return oss.str();
     }
 };
 #endif
