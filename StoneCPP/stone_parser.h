@@ -93,9 +93,26 @@ struct StoneGrammar
         : StoneGrammar::base_type(program)
     {
 //        using namespace qi::labels;
-
+        commaOp.add
+            (",", BinaryOperator::COMMA)
+            ;
+        assignOp.add
+            ("=", BinaryOperator::ASSIGN)
+            ;
+        orOp.add
+            ("||", BinaryOperator::OR)
+            ;
         andOp.add
-            ("&", BinaryOperator::AND)
+            ("&&", BinaryOperator::AND)
+            ;
+        bitwiseOrOp.add
+            ("|", BinaryOperator::BITWISE_OR)
+            ;
+        bitwiseXorOp.add
+            ("^", BinaryOperator::BITWISE_XOR)
+            ;
+        bitwiseAndOp.add
+            ("&", BinaryOperator::BITWISE_AND)
             ;
         equalOp.add
             ("==", BinaryOperator::EQUAL)
@@ -168,8 +185,28 @@ struct StoneGrammar
 
         expression
             = '(' >>  expression >> ')'
-            | equal
+            | assign
+            //| equal
             //| value
+            ;
+
+        //comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and,
+        assign = or_[qi::_val = qi::_1] >> -(assignOp >> or_)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            ;
+
+        or_ = and_[qi::_val = qi::_1] >> -(orOp >> and_)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            ;
+
+        and_ = bitwise_or[qi::_val = qi::_1] >> -(andOp >> bitwise_or)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            ;
+
+        bitwise_or = bitwise_xor[qi::_val = qi::_1] >> -(bitwiseOrOp >> bitwise_xor)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            ;
+
+        bitwise_xor = bitwise_and[qi::_val = qi::_1] >> -(bitwiseXorOp >> bitwise_and)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            ;
+
+        bitwise_and = equal[qi::_val = qi::_1] >> -(bitwiseAndOp >> equal)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
             ;
 
         equal
@@ -237,7 +274,8 @@ struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > equal, lowerGreater, shift, addSub, multDivMod;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > equal, lowerGreater, shift, addSub, multDivMod;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and,
+        equal, lowerGreater, shift, addSub, multDivMod;
     qi::symbols<char, BinaryOperator> commaOp, assignOp, orOp, andOp, bitwiseOrOp,bitwiseXorOp, bitwiseAndOp, equalOp,
                                     lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
 
