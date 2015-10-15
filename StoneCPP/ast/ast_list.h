@@ -43,6 +43,7 @@ public:
     ASTList(std::vector<ASTree *> list): children(list) {}
 
     ASTList(ASTree* child) : children({ child }) {}
+    ASTList() = default;
 };
 
 #endif

@@ -130,11 +130,14 @@
     <ClInclude Include="ast\ast_list.h" />
     <ClInclude Include="ast\ast_tree.h" />
     <ClInclude Include="ast\binary_operation.h" />
+    <ClInclude Include="ast\block.h" />
+    <ClInclude Include="ast\if_statement.h" />
     <ClInclude Include="ast\name.h" />
     <ClInclude Include="ast\number_literal.h" />
     <ClInclude Include="ast\operators.h" />
     <ClInclude Include="ast\string_literal.h" />
     <ClInclude Include="ast\unary_operation.h" />
+    <ClInclude Include="ast\while_statement.h" />
     <ClInclude Include="example.h" />
     <ClInclude Include="stone_parser.h" />
     <ClInclude Include="token.h" />

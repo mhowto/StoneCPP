@@ -51,6 +51,15 @@
     <ClInclude Include="ast\unary_operation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ast\if_statement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\while_statement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="while_state.input" />

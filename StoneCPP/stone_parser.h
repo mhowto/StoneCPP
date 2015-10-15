@@ -84,9 +84,10 @@ typedef boost::variant <
 
 
 //BOOST_FUSION_ADAPT_STRUCT(BinaryOperation, (BinaryOperator, op), (std::vector<ASTree*>, children))
+BOOST_FUSION_ADAPT_STRUCT(ASTree, (std::vector<ASTree*>, children))
 template <typename Iterator, typename Lexer>
 struct StoneGrammar
-    : qi::grammar<Iterator, qi::in_state_skipper<Lexer> >
+    : qi::grammar<Iterator, qi::in_state_skipper<Lexer>, ASTree*() >
 {
         template <typename TokenDef>
     StoneGrammar(TokenDef const& tok)
@@ -265,19 +266,20 @@ struct StoneGrammar
 
     //typedef boost::variant<unsigned int, std::string> expression_type;
 
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > program, block, statement;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > assignment, if_stmt;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > while_stmt;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer> > simple_stmt;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > value;
-    //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > primary;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > program, block, statement;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer> > program, block, statement;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > assignment, if_stmt;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > while_stmt;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > simple_stmt;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > equal, lowerGreater, shift, addSub, multDivMod;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and,
         equal, lowerGreater, shift, addSub, multDivMod;
     qi::symbols<char, BinaryOperator> commaOp, assignOp, orOp, andOp, bitwiseOrOp,bitwiseXorOp, bitwiseAndOp, equalOp,
                                     lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > value;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > primary;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
 
     //  the expression is the only rule having a return value
     //qi::rule<Iterator, expression_type(), qi::in_state_skipper<Lexer> >  expression;
