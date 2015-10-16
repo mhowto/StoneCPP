@@ -60,9 +60,16 @@
     <ClInclude Include="ast\block.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ast\statement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\expression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="while_state.input" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="deprected\old_lexer.txt" />

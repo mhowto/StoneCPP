@@ -77,10 +77,15 @@ typedef boost::variant <
 > expression_type;
 
 typedef boost::variant <
-    Name,
-    StringLiteral,
-    NumberLiteral
+    Name*,
+    StringLiteral*,
+    NumberLiteral*
 > primary_type;
+
+typedef boost::variant <
+    UnaryOperation*,
+    primary_type
+> value_type;
 
 
 //BOOST_FUSION_ADAPT_STRUCT(BinaryOperation, (BinaryOperator, op), (std::vector<ASTree*>, children))
@@ -151,6 +156,54 @@ struct StoneGrammar
                    | simple
         //program    : [ statement ] (";" | EOL)
         program    : { statement [";"] }
+        */
+
+
+        /* Full spec:
+         * 
+         primary    : "(" expr ")" | NUMBER | IDENTIFIER | STRING
+         factor     : "-" primary | primary
+         expr       : factor { OP factor }
+         block      : "{" [ statement ] { (";" | EOL) [ statement ] } "}"
+         //block      : "{" [ statement ] { (";" | EOL) [ statement ] } "}"
+         simple     : expr
+         statement  : "if" expr block [ "else" block ]
+         | "while" expr block
+         | simple
+         //program    : [ statement ] (";" | EOL)
+         //program    : { statement [";"] }
+
+         program    : [defclass | deffunc | statement] (";" | EOL)
+
+         deffunc    : "def" IDENTIFIER param_list block
+         defclass   :     
+         param_list : "(" [params] ")"
+         params     : param {"," param}
+         param      : IDENTIFIER
+
+         defclass   : "class" IDENTIFIER [ "extends" IDENTIFIER ] class_body
+         class_body : "{" [ member ] { ( ";" | EOL ) [ member ] } "}"
+         member     : deffunc 
+                    | simple
+
+
+         statement  : "if" expr block [ "else" block ]
+                    | "while" expr block
+                    | simple
+         simple     : expr
+         expr       : factor { OP factor }
+         factor     : "-" primary
+                    | primary
+
+         primary    : ( "[" [elements] "]" 
+                       |  "(" expr ")" 
+                       | NUMBER 
+                       | IDENTIFIER 
+                       | STRING ) { postfix }
+         postfix    : "." IDENTIFIER 
+                    | "(" [args] ")"
+         args       : expr { "," expr }
+         elements   : expr { "," expr }  // ¿¼ÂÇÓëargsºÏ²¢
         */
 
         program
@@ -278,8 +331,8 @@ struct StoneGrammar
     qi::symbols<char, BinaryOperator> commaOp, assignOp, orOp, andOp, bitwiseOrOp,bitwiseXorOp, bitwiseAndOp, equalOp,
                                     lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > value;
-    //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > primary;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, primary_type() > primary;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
 
     //  the expression is the only rule having a return value
     //qi::rule<Iterator, expression_type(), qi::in_state_skipper<Lexer> >  expression;

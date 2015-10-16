@@ -4,7 +4,7 @@
 #include "ast_list.h"
 #include <sstream>
 
-class Block : public ASList {
+class Block : public ASTList {
 public:
     Block() = default;
 

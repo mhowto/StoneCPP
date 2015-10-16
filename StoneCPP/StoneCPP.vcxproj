@@ -139,6 +139,8 @@
     <ClInclude Include="ast\unary_operation.h" />
     <ClInclude Include="ast\while_statement.h" />
     <ClInclude Include="example.h" />
+    <ClInclude Include="ast\expression.h" />
+    <ClInclude Include="ast\statement.h" />
     <ClInclude Include="stone_parser.h" />
     <ClInclude Include="token.h" />
   </ItemGroup>
@@ -147,6 +149,7 @@
     <ClCompile Include="stone_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="while_state.input" />
   </ItemGroup>
   <ItemGroup>
