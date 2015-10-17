@@ -193,6 +193,8 @@ struct StoneGrammar
          simple     : expr
          expr       : factor { OP factor }
          factor     : "-" primary
+                    | "+" primary
+                    | "!" primary
                     | primary
 
          primary    : ( "[" [elements] "]" 

@@ -21,9 +21,6 @@
     <ClInclude Include="ast\ast_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ast\ast_tree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="token.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -64,6 +61,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ast\expression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\ast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\class_definition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\function_definition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

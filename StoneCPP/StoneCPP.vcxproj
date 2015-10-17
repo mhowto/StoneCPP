@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\mhowto\Documents\Github\boost_1_59_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\shiyu\Documents\GitHub\boost_1_59_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/DBOOST_VARIANT_USE_RELAXED_GET_BY_DEFAULT %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -128,9 +128,11 @@
   <ItemGroup>
     <ClInclude Include="ast\ast_leaf.h" />
     <ClInclude Include="ast\ast_list.h" />
-    <ClInclude Include="ast\ast_tree.h" />
+    <ClInclude Include="ast\ast.h" />
     <ClInclude Include="ast\binary_operation.h" />
     <ClInclude Include="ast\block.h" />
+    <ClInclude Include="ast\class_definition.h" />
+    <ClInclude Include="ast\function_definition.h" />
     <ClInclude Include="ast\if_statement.h" />
     <ClInclude Include="ast\name.h" />
     <ClInclude Include="ast\number_literal.h" />
