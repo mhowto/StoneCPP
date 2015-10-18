@@ -20,6 +20,7 @@ public:
     {
         return identifier;
     }
+    virtual void accept(Visitor& visitor) override;
 
 private:
     IdentifierLiteral* identifier;

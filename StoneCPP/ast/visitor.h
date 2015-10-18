@@ -1,28 +1,28 @@
 #ifndef _VISITOR_H
 #define _VISITOR_H
 
-#include "expression.h"
-#include "block.h"
 
-#include "if_statement.h"
-#include "while_statement.h"
-#include "simple_statement.h"
+class IfStatement;
+class WhileStatement;
+class SimpleStatement;
 
-#include "unary_operation.h"
-#include "class_definition.h"
-#include "function_definition.h"
-#include "binary_operation.h"
-#include "unary_operation.h"
+class ClassDef;
+class FuncDef;
 
-#include "array_postfix.h"
-#include "call_postfix.h"
-#include "member_postfix.h"
+class ArrayPostfix;
+class CallPostfix;
+class MemberPostfix;
 
-#include "call_expression.h"
-#include "array_literal.h"
-#include "string_literal.h"
-#include "number_literal.h"
-#include "identifier_literal.h"
+class CallExpression;
+class ArrayLiteral;
+class StringLiteral;
+class NumberLiteral;
+class IdentifierLiteral;
+
+class BinaryOperation;
+class UnaryOperation;
+
+class Block;
 
 class Visitor
 {

@@ -27,10 +27,7 @@ public:
         return stmts;
     }
 
-    virtual void accept(Visitor& visitor)
-    {
-        visitor.visit(*this);
-    }
+    virtual void accept(Visitor& visitor);
 
 private:
     std::vector<Statement*> stmts;

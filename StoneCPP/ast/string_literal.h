@@ -4,6 +4,7 @@
 #include "literal.h"
 #include <string>
 #include <sstream>
+#include "visitor.h"
 
 class Postfix;
 class StringLiteral : public Literal {
@@ -25,10 +26,7 @@ public:
     {
     }
 
-    virtual void accept(Visitor& visitor) override
-    {
-        visitor.visit(*this);
-    }
+    virtual void accept(Visitor& visitor) override;
 
 private:
     std::string string_literal;

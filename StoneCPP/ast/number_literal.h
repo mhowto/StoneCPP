@@ -21,10 +21,7 @@ public:
     {
     }
 
-    virtual void accept(Visitor& visitor) override
-    {
-        visitor.visit(*this);
-    }
+    virtual void accept(Visitor& visitor) override;
 
 private:
     int number;

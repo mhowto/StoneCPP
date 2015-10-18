@@ -43,10 +43,7 @@ public:
         block.push_back(stmt);
     }
 
-    virtual void accept(Visitor& visitor) override
-    {
-        visitor.visit(*this);
-    }
+    virtual void accept(Visitor& visitor) override;
 
 private:
     std::string identifier;

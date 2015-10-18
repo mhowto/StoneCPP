@@ -35,10 +35,7 @@ public:
         postfixs.push_back(postfix);
     }
 
-    virtual void accept(Visitor& visitor) override
-    {
-        visitor.visit(*this);
-    }
+    virtual void accept(Visitor& visitor) override;
 
 private:
     std::string identifier_name;

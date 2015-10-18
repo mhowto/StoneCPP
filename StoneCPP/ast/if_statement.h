@@ -57,10 +57,7 @@ public:
     }
 
     // Inherited via Statement
-    virtual void accept(Visitor & visitor) override
-    {
-        visitor.visit(*this);
-    }
+    virtual void accept(Visitor & visitor) override;
 private:
     Expression* expr_;
     std::vector<Statement*> if_block_;

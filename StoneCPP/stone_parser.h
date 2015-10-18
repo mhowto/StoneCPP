@@ -15,6 +15,7 @@
 #include <fstream>
 #include <string>
 
+#include "ast/include_all_ast.h"
 #include "ast/visitor.h"
 
 namespace qi = boost::spirit::qi;
@@ -215,7 +216,7 @@ struct StoneGrammar
             ;
 
         block
-            = qi::lit('{') >> -statment >> *((qi::lit(';') | '\n') >> -statement) >> '}'
+            = qi::lit('{') >> -statement >> *((qi::lit(';') | '\n') >> -statement) >> '}'
             ;
 
         param_list
@@ -292,7 +293,7 @@ struct StoneGrammar
         primary
             = qi::lit('[') >> -(expression >> *(qi::lit(',') >> expression))
             | qi::lit('(') >> expression >> ')' >> *(postfix)
-            | tok.identifier[qi::_val = phx::new_<Name>(qi::_1)] >> *(postfix)
+            | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix)
             | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
             | tok.string_literal[qi::_val = phx::new_<StringLiteral>(qi::_1)]
             ;

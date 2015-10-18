@@ -21,10 +21,7 @@ public:
         return expression_;
     }
 
-    virtual void accept(Visitor& visitor) override
-    {
-        visitor.visit(*this);
-    }
+    virtual void accept(Visitor& visitor) override;
 private:
     UnaryOperator op;
     AST* expression_;
