@@ -2,6 +2,7 @@
 #define _BLOCK_H
 
 #include "ast.h"
+#include "visitor.h"
 
 class Statement;
 

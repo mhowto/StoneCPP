@@ -20,7 +20,7 @@ public:
 
     virtual void accept(Visitor& visitor) override
     {
-        return visitor.visit(*this);
+        visitor.visit(*this);
     }
 
     std::vector<Expression*> get_args()

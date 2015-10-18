@@ -42,9 +42,9 @@ public:
         return members;
     }
 
-    virtual void accept(Visitor& visitor_) override
+    virtual void accept(Visitor& visitor) override
     {
-        visitor_.visit(*this);
+        visitor.visit(*this);
     }
 
 private:

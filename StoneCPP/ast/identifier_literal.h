@@ -3,6 +3,7 @@
 
 #include "literal.h"
 #include <string>
+#include "visitor.h"
 
 class Postfix;
 

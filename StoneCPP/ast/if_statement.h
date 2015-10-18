@@ -4,6 +4,7 @@
 #include "ast.h"
 #include "statement.h"
 #include <sstream>
+#include "visitor.h"
 
 class Expression;
 
@@ -58,7 +59,7 @@ public:
     // Inherited via Statement
     virtual void accept(Visitor & visitor) override
     {
-        return visitor.visit(*this);
+        visitor.visit(*this);
     }
 private:
     Expression* expr_;

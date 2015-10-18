@@ -3,12 +3,13 @@
 
 #include "statement.h"
 #include <sstream>
+#include "visitor.h"
 
 class Expression;
 
 class WhileStatement : public Statement {
 public:
-    WhileStatement(Expression* expr, std::vector<Statement>* block) : expr_(expr), block_(block) {}
+    WhileStatement(Expression* expr, std::vector<Statement*> block) : expr_(expr), block_(block) {}
     ~WhileStatement()
     {
         delete expr_;

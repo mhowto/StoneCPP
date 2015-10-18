@@ -15,13 +15,7 @@
 #include <fstream>
 #include <string>
 
-#include "ast/name.h"
-#include "ast/string_literal.h"
-#include "ast/number_literal.h"
-#include "ast/operators.h"
-#include "ast/unary_operation.h"
-#include "ast/binary_operation.h"
-#include "ast/ast_tree.h"
+#include "ast/visitor.h"
 
 namespace qi = boost::spirit::qi;
 namespace lex = boost::spirit::lex;
@@ -68,6 +62,7 @@ struct StoneToken : lex::lexer<Lexer>
 };
 
 
+/*
 typedef boost::variant <
     boost::recursive_wrapper<StringLiteral>,
     boost::recursive_wrapper<NumberLiteral>,
@@ -86,13 +81,14 @@ typedef boost::variant <
     UnaryOperation*,
     primary_type
 > value_type;
+*/
 
 
 //BOOST_FUSION_ADAPT_STRUCT(BinaryOperation, (BinaryOperator, op), (std::vector<ASTree*>, children))
-BOOST_FUSION_ADAPT_STRUCT(ASTree, (std::vector<ASTree*>, children))
+//BOOST_FUSION_ADAPT_STRUCT(ASTree, (std::vector<ASTree*>, children))
 template <typename Iterator, typename Lexer>
 struct StoneGrammar
-    : qi::grammar<Iterator, qi::in_state_skipper<Lexer>, ASTree*() >
+    : qi::grammar<Iterator, qi::in_state_skipper<Lexer>, AST*() >
 {
         template <typename TokenDef>
     StoneGrammar(TokenDef const& tok)
@@ -161,18 +157,6 @@ struct StoneGrammar
 
         /* Full spec:
          * 
-         primary    : "(" expr ")" | NUMBER | IDENTIFIER | STRING
-         factor     : "-" primary | primary
-         expr       : factor { OP factor }
-         block      : "{" [ statement ] { (";" | EOL) [ statement ] } "}"
-         //block      : "{" [ statement ] { (";" | EOL) [ statement ] } "}"
-         simple     : expr
-         statement  : "if" expr block [ "else" block ]
-         | "while" expr block
-         | simple
-         //program    : [ statement ] (";" | EOL)
-         //program    : { statement [";"] }
-
          program    : [defclass | deffunc | statement] (";" | EOL)
 
          deffunc    : "def" IDENTIFIER param_list block
@@ -210,7 +194,32 @@ struct StoneGrammar
         */
 
         program
-            = -statement >> (qi::lit(';') | '\n')
+            = -(class_def | func_def | statement) >> (qi::lit(';') | '\n')
+            ;
+
+        class_def
+            = qi::lit("class") >> tok.identifier >> -(qi::lit("extends") >> tok.identifier) >> class_body
+            ;
+
+        class_body
+            = '{' >> -member >> *((qi::lit(';') | '\n') >> -member) >> '}'
+            ;
+
+        member
+            = func_def
+            | simple_stmt
+            ;
+            
+        func_def
+            = qi::lit("def") >> tok.identifier >> param_list >> block
+            ;
+
+        block
+            = qi::lit('{') >> -statment >> *((qi::lit(';') | '\n') >> -statement) >> '}'
+            ;
+
+        param_list
+            = '(' >> -(tok.identifier >> *(',' >> tok.identifier)) >> ')'
             ;
 
         statement
@@ -227,24 +236,11 @@ struct StoneGrammar
             = "while" >> expression >> block;
 
         simple_stmt
-            = expression
+            = expression >> -(expression >> *(qi::lit(',') >> expression))
             ;
-
-        block
-            = '{' >> -statement >> *((qi::lit(';') | '\n') >> -statement) >> '}'
-            ;
-
-        /*
-        expression
-            = factor >> *(op >> factor)
-            ;
-        */
 
         expression
-            = '(' >>  expression >> ')'
-            | assign
-            //| equal
-            //| value
+            = assign
             ;
 
         //comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and,
@@ -293,54 +289,57 @@ struct StoneGrammar
             | (primary)
             ;
 
-        /*
-        factor
-            = '-' >> primary
-            | primary
-            ;
-
-        op
-            = qi::lit('+')
-            | '-'
-            | '*'
-            | '/'
-            | qi::lit('=')
-            | qi::lit("||")
-            ;
-        */
-
         primary
-            //= '(' >> expression >> ')'
-            = tok.identifier[qi::_val = phx::new_<Name>(qi::_1)]
-           // | tok.identifier[std::cout << labels::_1 << std::endl]
+            = qi::lit('[') >> -(expression >> *(qi::lit(',') >> expression))
+            | qi::lit('(') >> expression >> ')' >> *(postfix)
+            | tok.identifier[qi::_val = phx::new_<Name>(qi::_1)] >> *(postfix)
             | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
-            //| tok.number[std::cout << labels::_1 << std::endl]
             | tok.string_literal[qi::_val = phx::new_<StringLiteral>(qi::_1)]
-            //| tok.string_literal[std::cout <<labels::_1 << std::endl]
+            ;
+
+        postfix
+            = qi::lit('.') >> tok.identifier
+            | '(' >> expression >> *(',' >> expression) >> ')'
+            | '[' >> expression >> ']'
             ;
     }
 
     //typedef boost::variant<unsigned int, std::string> expression_type;
 
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > program, block, statement;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, AST*() > program;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ClassDef*() > class_def;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, FuncDef*() > func_def;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, Statement*() > statement;
+
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, std::vector<AST*>()> class_body;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, AST*()> member;
+
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, std::vector<std::string>()> param_list;
+
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, Block*() > block;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer> > program, block, statement;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > assignment, if_stmt;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > while_stmt;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > simple_stmt;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > assignment;
+
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, IfStatement*() > if_stmt;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, WhileStatement*() > while_stmt;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, SimpleStatement*() > simple_stmt;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > equal, lowerGreater, shift, addSub, multDivMod;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and,
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and,
         equal, lowerGreater, shift, addSub, multDivMod;
     qi::symbols<char, BinaryOperator> commaOp, assignOp, orOp, andOp, bitwiseOrOp,bitwiseXorOp, bitwiseAndOp, equalOp,
                                     lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > value;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, primary_type() > primary;
+
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, UnaryOperation*() > value;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, PrimaryExpression*() > primary;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
+
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, Postfix*() > postfix;
 
     //  the expression is the only rule having a return value
     //qi::rule<Iterator, expression_type(), qi::in_state_skipper<Lexer> >  expression;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > expression;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > expression;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, Expression*() > expression;
 };
 
 #endif

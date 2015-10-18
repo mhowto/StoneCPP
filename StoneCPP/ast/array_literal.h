@@ -2,6 +2,7 @@
 #define _ARRAY_LITERAL_H
 
 #include "literal.h"
+#include "visitor.h"
 
 class Expression;
 

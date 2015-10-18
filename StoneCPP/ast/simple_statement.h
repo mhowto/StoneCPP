@@ -3,6 +3,7 @@
 
 
 #include "statement.h"
+#include "visitor.h"
 
 class Expression;
 

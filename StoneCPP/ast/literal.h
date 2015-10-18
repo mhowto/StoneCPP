@@ -6,7 +6,7 @@
 class Literal : public PrimaryExpression
 {
 public:
-    virtual ~Literal() = 0
+    virtual ~Literal() = 0;
 };
 
 Literal::~Literal() {}

@@ -2,6 +2,7 @@
 #define __NUMBER_LITERAL_H
 
 #include "literal.h"
+#include "visitor.h"
 class Postfix;
 
 class NumberLiteral : public Literal {

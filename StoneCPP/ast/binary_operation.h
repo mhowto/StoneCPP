@@ -28,7 +28,7 @@ public:
 
     virtual void accept(Visitor& visitor) override
     {
-        visitor.visitor(*this);
+        visitor.visit(*this);
     }
 
 private:
