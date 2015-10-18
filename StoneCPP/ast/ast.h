@@ -4,10 +4,13 @@
 #include <string>
 #include <vector>
 
+class Visitor;
+
 class AST {
 public:
-    virtual std::string location() = 0;
-    virtual std::string toString() = 0;
     virtual ~AST() = 0;
+    virtual void accept(Visitor&) = 0;
 };
+
+AST::~AST() {} // must add this
 #endif

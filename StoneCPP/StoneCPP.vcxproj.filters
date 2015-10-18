@@ -72,6 +72,12 @@
     <ClInclude Include="ast\function_definition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ast\to_string_visitor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\visitor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="while_state.input" />

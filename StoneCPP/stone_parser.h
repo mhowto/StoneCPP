@@ -176,7 +176,6 @@ struct StoneGrammar
          program    : [defclass | deffunc | statement] (";" | EOL)
 
          deffunc    : "def" IDENTIFIER param_list block
-         defclass   :     
          param_list : "(" [params] ")"
          params     : param {"," param}
          param      : IDENTIFIER

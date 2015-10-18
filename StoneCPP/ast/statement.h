@@ -1,10 +1,14 @@
 #ifndef _STATEMENT_H
 #define _STATEMENT_H
 
-#include "ast_tree.h"
+#include "ast.h"
 
-class Statement : public ASTree
+class Statement : public AST
 {
+public:
+    virtual ~Statement() = 0;
 };
+
+Statement::~Statement() {}
 
 #endif

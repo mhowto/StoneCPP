@@ -4,6 +4,7 @@
 #include "ast.h"
 #include <string>
 #include <vector>
+#include "visitor.h"
 
 #include <boost/variant.hpp>
 
@@ -13,19 +14,38 @@ class FuncDef;
 class ClassDef : public AST
 {
 public:
-    typedef boost::variant<Expression*, FuncDef*> member_type;
+    //typedef boost::variant<Expression*, FuncDef*> member_type;
+    typedef AST* member_type;
 
     ClassDef(std::string iden) : identifier(iden) {}
     ClassDef(std::string iden, std::string ext_iden) : identifier(iden), extented_identifier(ext_iden) {}
 
-    virtual std::string toString() override
+    ~ClassDef()
     {
-        return "class" + identifier + " extends " + extented_identifier;
+        for (int i = 0; i < members.size(); ++i)
+        {
+            delete members[i];
+        }
     }
 
-    virtual std::string location() override
+    std::string get_identifier()
     {
-        return "unknown";
+        return identifier;
+    }
+
+    std::string get_extended_identifier()
+    {
+        return extented_identifier;
+    }
+
+    std::vector<member_type> get_members()
+    {
+        return members;
+    }
+
+    virtual void accept(Visitor& visitor_) override
+    {
+        visitor_.visit(*this);
     }
 
 private:

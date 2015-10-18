@@ -1,38 +1,28 @@
 #ifndef __UNARY_OPERATION_H
 #define __UNARY_OPERATION_H
 
-#include "ast_list.h"
+#include "expression.h"
 #include "operators.h"
 #include <sstream>
 #include <cassert>
 
-class UnaryOperation : public ASTList{
-private:
-    UnaryOperator op;
-
+class UnaryOperation : public Expression{
 public:
-    UnaryOperation(UnaryOperator op, ASTree* operation): ASTList(operation), op(op) {}
+    UnaryOperation(UnaryOperator op, AST* expr_): op(op), expression_(expr_) {}
 
     UnaryOperator get_op()
     {
         return op;
     }
 
-    ASTree* expr()
+    AST* expr()
     {
-        assert(this->num_children() == 1);
-        return this->child(0);
+        return expression_;
     }
 
-    // Inherited via ASTList
-    virtual std::string toString() override
-    {
-        assert(this->num_children() == 1);
-        std::ostringstream oss;
-        oss << op << this->child(0)->toString();
-        
-        return oss.str();
-    }
+private:
+    UnaryOperator op;
+    AST* expression_;
 };
 
 #endif

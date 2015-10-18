@@ -1,43 +1,33 @@
 #ifndef __BINARY_OPERATION_H
 #define __BINARY_OPERATION_H
 
-#include "ast_list.h"
+#include "expression.h"
 #include <sstream>
 #include "operators.h"
 #include <cassert>
 
-class BinaryOperation : public ASTList {
-private:
-    BinaryOperator op;
-
+class BinaryOperation : public Expression {
 public:
-    BinaryOperation(BinaryOperator op, ASTree* lhs, ASTree* rhs): ASTList({lhs, rhs}), op(op) {}
+    BinaryOperation(BinaryOperator op, AST* lhs_, AST* rhs_): op(op), lhs(lhs), rhs(rhs_) {}
 
     BinaryOperator get_op()
     {
         return op;
     }
 
-    ASTree* left_expr()
+    AST* left_expr()
     {
-        assert(this->num_children() == 2);
-        return this->child(0);
+        return lhs;
     }
 
-    ASTree* right_expr()
+    AST* right_expr()
     {
-        assert(this->num_children() == 2);
-        return this->child(1);
+        return rhs;
     }
 
-    // Inherited via ASTList
-    virtual std::string toString() override
-    {
-        assert(this->num_children() == 2);
-        std::ostringstream oss;
-        oss << this->child(0)->toString() << op << this->child(1)->toString();
-
-        return oss.str();
-    }
+private:
+    BinaryOperator op;
+    AST* lhs;
+    AST* rhs;
 };
 #endif

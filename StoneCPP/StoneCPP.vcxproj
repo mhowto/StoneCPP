@@ -138,7 +138,9 @@
     <ClInclude Include="ast\number_literal.h" />
     <ClInclude Include="ast\operators.h" />
     <ClInclude Include="ast\string_literal.h" />
+    <ClInclude Include="ast\to_string_visitor.h" />
     <ClInclude Include="ast\unary_operation.h" />
+    <ClInclude Include="ast\visitor.h" />
     <ClInclude Include="ast\while_statement.h" />
     <ClInclude Include="example.h" />
     <ClInclude Include="ast\expression.h" />

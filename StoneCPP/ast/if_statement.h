@@ -1,47 +1,63 @@
 #ifndef __IF_STATEMENT_H
 #define __IF_STATEMENT_H
 
-#include "ast_list.h"
+#include "ast.h"
+#include "statement.h"
 #include <sstream>
 
-class IfStatement : public ASTList {
+class Expression;
+
+class IfStatement : public Statement {
 public:
-    IfStatement(ASTree* expr, ASTree* if_block) : ASTList({ expr, if_block }) {}
-    IfStatement(ASTree* expr, ASTree* if_block, ASTree* else_block) : ASTList({ expr, if_block, else_block }) {}
+    IfStatement() = default;
+    IfStatement(Expression* expr, std::vector<Statement*> if_block) : expr_(expr), if_block_(if_block) {}
     
-    ASTree* expr() 
-    {
-        return child(0);
-    }
+    IfStatement(Expression* expr, std::vector<Statement*> if_block, std::vector<Statement*> else_block) :
+        expr_(expr), if_block_(if_block), else_block_(else_block) {}
 
-    ASTree* if_block()
+    ~IfStatement()
     {
-        return child(1);
-    }
 
-    ASTree* else_block()
-    {
-        if (num_children() == 3)
+        delete expr_;
+        for (int i = 0; i < if_block_.size(); ++i)
         {
-            return child(2);
+            delete if_block_[i];
         }
-        else
+
+        for (int i = 0; i < else_block_.size(); ++i)
         {
-            return nullptr;
+            delete else_block_[i];
         }
     }
-
-    // Inherited via ASTList
-    virtual std::string toString() override
+    
+    Expression* expr() 
     {
-        std::stringstream oss;
-        oss << "if" << expr()->toString() << if_block()->toString();
-        if (ASTree* block = else_block())
-        {
-            oss << "else" << block->toString();
-        }
-        return oss.str();
+        return expr_;
     }
+
+    std::vector<Statement*> if_block()
+    {
+        return if_block_;
+    }
+
+    std::vector<Statement*> else_block()
+    {
+        return else_block_;
+    }
+
+    void push_if_stmt(Statement* stmt)
+    {
+        if_block_.push_back(stmt);
+    }
+
+    void push_else_stmt(Statement* stmt)
+    {
+        else_block_.push_back(stmt);
+    }
+private:
+    Expression* expr_;
+    std::vector<Statement*> if_block_;
+    std::vector<Statement*> else_block_;
 };
 
 #endif

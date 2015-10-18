@@ -1,28 +1,41 @@
 #ifndef _WHILE_STATEMENT_H
 #define _WHILE_STATEMENT_H
 
-#include "ast_list.h"
+#include "statement.h"
 #include <sstream>
 
+class Expression;
 
-class WhileStatement : public ASTList {
+class WhileStatement : public Statement {
 public:
-    WhileStatement(ASTree* expr, ASTree* block): ASTList({expr, block}) {}
-
-    ASTree* expr() {
-        return child(0);
-    }
-
-    ASTree* block() {
-        return child(1);
-    }
-
-    virtual std::string toString() override
+    WhileStatement(Expression* expr, std::vector<Statement>* block) : expr_(expr), block_(block) {}
+    ~WhileStatement()
     {
-        std::stringstream oss;
-        oss << "while" << expr()->toString() << block()->toString();
-        return oss.str();
+        delete expr_;
+        for (int i = 0; i < block_.size(); ++i)
+        {
+            delete block_[i];
+        }
     }
+
+    Expression* expr()
+    {
+        return expr_;
+    }
+
+    std::vector<Statement*> block()
+    {
+        return block_;
+    }
+
+    void push_stmt(Statement* stmt)
+    {
+        block_.push_back(stmt);
+    }
+
+private:
+    Expression* expr_;
+    std::vector<Statement*> block_;
 };
 
 #endif
