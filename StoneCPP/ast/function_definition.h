@@ -42,6 +42,11 @@ public:
         block.push_back(stmt);
     }
 
+    virtual void accept(Visitor& visitor) override
+    {
+        visitor.visit(*this);
+    }
+
 private:
     std::string identifier;
     std::vector<std::string> params;

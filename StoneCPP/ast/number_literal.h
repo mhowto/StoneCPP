@@ -1,20 +1,28 @@
 #ifndef __NUMBER_LITERAL_H
 #define __NUMBER_LITERAL_H
 
-#include "ast_leaf.h"
+#include "literal.h"
+class Postfix;
 
-class NumberLiteral : public ASTLeaf {
+class NumberLiteral : public Literal {
 public:
     NumberLiteral() = default;
     NumberLiteral(int num): number(num) {}
 
     int value() { return  number; }
 
-    virtual std::string toString() override
+    virtual std::vector<Postfix*> get_postfixs() override
     {
-        std::ostringstream oss;
-        oss << value();
-        return oss.str();
+        return std::vector<Postfix*>();
+    }
+
+    virtual void push_postfix(Postfix* postfix) override
+    {
+    }
+
+    virtual void accept(Visitor& visitor) override
+    {
+        visitor.visit(*this);
     }
 
 private:

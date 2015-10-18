@@ -5,6 +5,7 @@
 #include "operators.h"
 #include <sstream>
 #include <cassert>
+#include "visitor.h"
 
 class UnaryOperation : public Expression{
 public:
@@ -15,11 +16,15 @@ public:
         return op;
     }
 
-    AST* expr()
+    AST* get_expr()
     {
         return expression_;
     }
 
+    virtual void accept(Visitor& visitor) override
+    {
+        visitor.visit(*this);
+    }
 private:
     UnaryOperator op;
     AST* expression_;

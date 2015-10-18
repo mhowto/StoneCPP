@@ -176,6 +176,7 @@ struct StoneGrammar
          program    : [defclass | deffunc | statement] (";" | EOL)
 
          deffunc    : "def" IDENTIFIER param_list block
+         block      : "{" [ statement ] { (";" | EOL) [ statement ] } "}"
          param_list : "(" [params] ")"
          params     : param {"," param}
          param      : IDENTIFIER
@@ -189,7 +190,7 @@ struct StoneGrammar
          statement  : "if" expr block [ "else" block ]
                     | "while" expr block
                     | simple
-         simple     : expr
+         simple     : expr [ args ]
          expr       : factor { OP factor }
          factor     : "-" primary
                     | "+" primary
@@ -203,6 +204,7 @@ struct StoneGrammar
                        | STRING ) { postfix }
          postfix    : "." IDENTIFIER 
                     | "(" [args] ")"
+                    | "[" expr "]"
          args       : expr { "," expr }
          elements   : expr { "," expr }  // ¿¼ÂÇÓëargsºÏ²¢
         */

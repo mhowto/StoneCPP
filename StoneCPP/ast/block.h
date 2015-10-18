@@ -1,32 +1,38 @@
 #ifndef _BLOCK_H
 #define _BLOCK_H
 
-#include "ast_list.h"
-#include <sstream>
+#include "ast.h"
 
-class Block : public ASTList {
+class Statement;
+
+class Block : public AST {
 public:
     Block() = default;
-
-    void push_statement(ASTree* stmt)
+    ~Block()
     {
-        this->children.push_back(stmt);
-    }
-
-    virtual std::string toString() override
-    {
-        std::stringstream oss;
-        oss << '{';
-        if (num_children() > 1) {
-            oss << child(0)->toString();
-            for (int i = 1; i < num_children(); i++)
-            {
-                oss << ';' << child(i)->toString();
-            }
+        for (int i = 0; i < stmts.size(); ++i)
+        {
+            delete stmts[i];
         }
-        oss << '}';
     }
-};
 
+    void push_statement(Statement* stmt)
+    {
+        stmts.push_back(stmt);
+    }
+
+    std::vector<Statement*> get_statements()
+    {
+        return stmts;
+    }
+
+    virtual void accept(Visitor& visitor)
+    {
+        visitor.visit(*this);
+    }
+
+private:
+    std::vector<Statement*> stmts;
+};
 
 #endif

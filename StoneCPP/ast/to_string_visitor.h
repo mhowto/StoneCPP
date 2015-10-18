@@ -61,6 +61,26 @@ public:
         str_ = oss.str();
     }
 
+    virtual void visit(SimpleStatement &simple_stmt) override
+    {
+        std::stringstream oss;
+        simple_stmt.get_expr()->accept(*this);
+        oss << this->string();
+        std::vector<Expression*> args = simple_stmt.get_args();
+        if (args.size() > 0)
+        {
+            args[0]->accept(*this);
+            oss << this->string();
+            for (int i = 1; i < args.size(); ++i)
+            {
+                oss << ',';
+                args[i]->accept(*this);
+                oss << this->string();
+            }
+        }
+        str_ = oss.str();
+    }
+
     virtual void visit(ClassDef & class_def) override
     {
         std::stringstream oss;
@@ -108,8 +128,136 @@ public:
     {
         std::stringstream oss;
         oss << unary_operation.get_op();
-        unary_operation.expr()->accept(*this);
+        unary_operation.get_expr()->accept(*this);
         oss << this->string();
+        str_ = oss.str();
+    }
+
+    // Inherited via Visitor
+    virtual void visit(ArrayPostfix& array_postfix) override
+    {
+        std::stringstream oss;
+        oss << '[';
+        array_postfix.get_expr()->accept(*this);
+        oss << this->string();
+        oss << ']';
+        str_ = oss.str();
+    }
+
+    virtual void visit(CallPostfix & call_postfix) override
+    {
+        std::stringstream oss;
+        oss << '(';
+        std::vector<Expression*> args = call_postfix.get_args();
+        if (args.size() > 0)
+        {
+            args[0]->accept(*this);
+            oss << this->string();
+            for (int i = 1; i < args.size(); ++i)
+            {
+                oss << ',';
+                args[i]->accept(*this);
+                oss << this->string();
+            }
+        }
+        oss << ')';
+        str_ = oss.str();
+    }
+
+    virtual void visit(MemberPostfix & member_postfix) override
+    {
+        std::stringstream oss;
+        oss << '.';
+        member_postfix.get_identifier()->accept(*this);
+        oss << this->string();
+        str_ = oss.str();
+    }
+
+    virtual void visit(CallExpression & expr) override
+    {
+        std::stringstream oss;
+
+        oss << '(';
+        expr.get_expr()->accept(*this);
+        oss << this->string();
+        oss << ')';
+
+        std::vector<Postfix*> postfixs = expr.get_postfixs();
+        for (auto postfix : postfixs)
+        {
+            postfix->accept(*this);
+            oss << this->string();
+        }
+
+        str_ = oss.str();
+    }
+
+    virtual void visit(ArrayLiteral & array_literal) override
+    {
+        std::stringstream oss;
+        oss << '[';
+        std::vector<Expression*> elements = array_literal.get_elements();
+        if (elements.size() > 0)
+        {
+            elements[0]->accept(*this);
+            oss << this->string();
+            for (int i = 1; i < elements.size(); ++i)
+            {
+                oss << ',';
+                elements[i]->accept(*this);
+                oss << this->string();
+            }
+        }
+        
+        oss << ']';
+        str_ = oss.str();
+    }
+
+    virtual void visit(StringLiteral & string_literal) override
+    {
+        str_ = string_literal.value();
+    }
+
+    virtual void visit(NumberLiteral & number_literal) override
+    {
+        std::stringstream oss;
+        oss << number_literal.value();
+        str_ = oss.str();
+    }
+
+    virtual void visit(IdentifierLiteral & iden) override
+    {
+        std::stringstream oss;
+
+        oss << iden.value();
+
+        std::vector<Postfix*> postfixs = iden.get_postfixs();
+        for (auto postfix : postfixs)
+        {
+            postfix->accept(*this);
+            oss << this->string();
+        }
+
+        str_ = oss.str();
+    }
+
+    virtual void visit(Block & block) override
+    {
+        std::stringstream oss;
+        oss << '{';
+        std::vector<Statement*> stmts = block.get_statements();
+        if (stmts.size() > 0)
+        {
+            stmts[0]->accept(*this);
+            oss << this->string();
+
+            for (int i = 1; i < stmts.size(); ++i)
+            {
+                stmts[i]->accept(*this);
+                oss << ';' << this->string();
+            }
+        }
+        oss << '}';
         str_ = oss.str();
     }
 };

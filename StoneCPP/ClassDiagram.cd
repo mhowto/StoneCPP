@@ -1,133 +1,196 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="WhileStatement" Collapsed="true">
-    <Position X="4.5" Y="3.25" Width="1.5" />
+  <Class Name="ArrayLiteral" Collapsed="true">
+    <Position X="13.25" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAgABAA=</HashCode>
-      <FileName>ast\while_statement.h</FileName>
+      <HashCode>AAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAgAA=</HashCode>
+      <FileName>ast\array_literal.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ASTList" Collapsed="true">
-    <Position X="3.25" Y="1.5" Width="1.5" />
+  <Class Name="ArrayPostfix" Collapsed="true">
+    <Position X="2" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAgAAAAQAAACAAAACAAAAAgAAAAAAAAAAAAA=</HashCode>
-      <FileName>ast\ast_list.h</FileName>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAABAAAAA=</HashCode>
+      <FileName>ast\array_postfix.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ASTLeaf" Collapsed="true">
-    <Position X="10.5" Y="1.75" Width="1.5" />
+  <Class Name="AST" Collapsed="true">
+    <Position X="19" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAgAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ast\ast_leaf.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ASTree" Collapsed="true">
-    <Position X="6.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAEAAAAAAgAAAAAAAACABAACAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ast\ast_tree.h</FileName>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ast\ast.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BinaryOperation" Collapsed="true">
-    <Position X="6.25" Y="3.25" Width="1.5" />
+    <Position X="22.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAAAAAABAAAAAEAAQAAAAAJAAAAAAA=</HashCode>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAEABQABAAAJAAAAAAA=</HashCode>
       <FileName>ast\binary_operation.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Block" Collapsed="true">
-    <Position X="1.75" Y="5.5" Width="1.5" />
+    <Position X="35.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAAAAAAAAACAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAEAAAQAAAAACAAAAAABAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
       <FileName>ast\block.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="IdToken" Collapsed="true">
-    <Position X="14" Y="5.75" Width="1.5" />
+  <Class Name="CallExpression" Collapsed="true">
+    <Position X="11" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAACAIAAAAAAAAAAAAAAAAAAgA=</HashCode>
-      <FileName>token.h</FileName>
+      <HashCode>AAEAAAAgAIAAAAAAAAAAAAAAAAAAAAAAAAAQABgAAAA=</HashCode>
+      <FileName>ast\CallExpression.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CallPostfix" Collapsed="true">
+    <Position X="4.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAABAAA=</HashCode>
+      <FileName>ast\call_postfix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClassDef" Collapsed="true">
+    <Position X="8.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAACAAAAAAACAAAAAARAEEAMAAAAAAA=</HashCode>
+      <FileName>ast\class_definition.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Expression" Collapsed="true">
+    <Position X="17.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ast\expression.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FuncDef" Collapsed="true">
+    <Position X="33.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgBAAAACAEAAAICAAAAAAAAAAABAAAAIAAAABAA=</HashCode>
+      <FileName>ast\function_definition.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IdentifierLiteral" Collapsed="true">
+    <Position X="20" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAgAAAAAAAAAAAAAAEBAAAAACAAAAAAIAAAAAA=</HashCode>
+      <FileName>ast\identifier_literal.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IfStatement" Collapsed="true">
-    <Position X="2.75" Y="3.25" Width="1.5" />
+    <Position X="26.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAQAAAAAAgAABAAAAAAAAAAAAAAAAAgAAIA=</HashCode>
+      <HashCode>AQAAAAAAAAQAAAAAAwAAAAAAAAAAAQAAAAQAABgAAIA=</HashCode>
       <FileName>ast\if_statement.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Name" Collapsed="true">
-    <Position X="8.5" Y="3.25" Width="1.5" />
+  <Class Name="Literal" Collapsed="true">
+    <Position X="16.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAABAQAAAAEAAAAAAAAIAAAAAA=</HashCode>
-      <FileName>ast\name.h</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ast\literal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemberPostfix" Collapsed="true">
+    <Position X="6.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAgAA=</HashCode>
+      <FileName>ast\member_postfix.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NumberLiteral" Collapsed="true">
-    <Position X="12.5" Y="3.25" Width="1.5" />
+    <Position X="17.75" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAAQAAAAAAABAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AEAAAAAgAAAAQAAAAAAABAAAAAAAACAAAAAAAAAAAAA=</HashCode>
       <FileName>ast\number_literal.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NumToken" Collapsed="true">
-    <Position X="18.5" Y="5.75" Width="1.5" />
+  <Class Name="Postfix" Collapsed="true">
+    <Position X="4.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAgCAAAAAAAAAAAAA=</HashCode>
-      <FileName>token.h</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>ast\postfix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrimaryExpression" Collapsed="true">
+    <Position X="15.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgIAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ast\primary_expression.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimpleStatement" Collapsed="true">
+    <Position X="31.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAACAAAAAAAAAAAAAIAAAAAAAAAAgBgAgAA=</HashCode>
+      <FileName>ast\simple_statement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Statement" Collapsed="true">
+    <Position X="29" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ast\statement.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StringLiteral" Collapsed="true">
-    <Position X="10.5" Y="3.25" Width="1.5" />
+    <Position X="15.5" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAABAACAAAAACQAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAgAAAAAAAAAAAABAACAAAAACQAAAAAAAAAAAA=</HashCode>
       <FileName>ast\string_literal.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StrToken" Collapsed="true">
-    <Position X="16.25" Y="5.75" Width="1.5" />
+  <Class Name="ToStringVisitor" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAAAAAACAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
-      <FileName>token.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Token" Collapsed="true">
-    <Position X="16.25" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAACAAAABACAAAQQABAAAACAAEAAABCAA=</HashCode>
-      <FileName>token.h</FileName>
+      <HashCode>AAAAAAAAAABAAAAAAAAEAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>ast\to_string_visitor.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UnaryOperation" Collapsed="true">
-    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Position X="24.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAABAAAAAEAAAAAAAAIAAgAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAEAAAAAAAAIAAgIAAA=</HashCode>
       <FileName>ast\unary_operation.h</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Visitor" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ast\visitor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WhileStatement" Collapsed="true">
+    <Position X="29" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAICAAAAAAAAAAAABgABAA=</HashCode>
+      <FileName>ast\while_statement.h</FileName>
+    </TypeIdentifier>
+  </Class>
   <Struct Name="StoneGrammar&lt;Iterator, Lexer&gt;" Collapsed="true">
-    <Position X="15.5" Y="1.75" Width="1.5" />
+    <Position X="38.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACIAAAIQiAKEIAAgAAIASDRAADEAACBAEMEAQAACJAE=</HashCode>
       <FileName>stone_parser.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="StoneToken&lt;Lexer&gt;" Collapsed="true">
-    <Position X="17.25" Y="1.75" Width="1.5" />
+    <Position X="40" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAQAAAAAAAAAACAAAAAABAAAAAAAAQAAA=</HashCode>
       <FileName>stone_parser.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Enum Name="BinaryOperator" Collapsed="true">
-    <Position X="15.5" Y="3" Width="1.5" />
+    <Position X="38.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AACBwgQAAAAFAIAQAIAAAAAAAgoIAAACAAAAAAQAAQg=</HashCode>
       <FileName>ast\operators.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="UnaryOperator" Collapsed="true">
-    <Position X="17.25" Y="3" Width="1.5" />
+    <Position X="40" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAIAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ast\operators.h</FileName>

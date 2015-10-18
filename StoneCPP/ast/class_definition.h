@@ -6,7 +6,6 @@
 #include <vector>
 #include "visitor.h"
 
-#include <boost/variant.hpp>
 
 class Expression;
 class FuncDef;

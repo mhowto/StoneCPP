@@ -33,6 +33,11 @@ public:
         block_.push_back(stmt);
     }
 
+    virtual void accept(Visitor& visitor) override
+    {
+        visitor.visit(*this);
+    }
+
 private:
     Expression* expr_;
     std::vector<Statement*> block_;

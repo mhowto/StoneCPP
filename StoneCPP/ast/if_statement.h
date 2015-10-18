@@ -54,6 +54,12 @@ public:
     {
         else_block_.push_back(stmt);
     }
+
+    // Inherited via Statement
+    virtual void accept(Visitor & visitor) override
+    {
+        return visitor.visit(*this);
+    }
 private:
     Expression* expr_;
     std::vector<Statement*> if_block_;

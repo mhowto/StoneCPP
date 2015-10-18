@@ -5,6 +5,7 @@
 #include <sstream>
 #include "operators.h"
 #include <cassert>
+#include "visitor.h"
 
 class BinaryOperation : public Expression {
 public:
@@ -23,6 +24,11 @@ public:
     AST* right_expr()
     {
         return rhs;
+    }
+
+    virtual void accept(Visitor& visitor) override
+    {
+        visitor.visitor(*this);
     }
 
 private:
