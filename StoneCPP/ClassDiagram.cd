@@ -3,14 +3,14 @@
   <Class Name="ArrayLiteral" Collapsed="true">
     <Position X="13.25" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAgAA=</HashCode>
+      <HashCode>AAAAIACgAAAEABAAAAAAAAAAAAAAAABAAAAACAAAgAA=</HashCode>
       <FileName>ast\array_literal.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ArrayPostfix" Collapsed="true">
     <Position X="2" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAABAAAAA=</HashCode>
+      <HashCode>AAAAAACAAAAAAAMAAAAAAAAAAAAAAAAAAQAAABAAAAA=</HashCode>
       <FileName>ast\array_postfix.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -24,28 +24,28 @@
   <Class Name="BinaryOperation" Collapsed="true">
     <Position X="22.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAEABQABAAAJAAAAAAA=</HashCode>
+      <HashCode>AAAAAADAAAAAAAAAAAAAAAAAAAEABQABAAAJAAAAAAA=</HashCode>
       <FileName>ast\binary_operation.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Block" Collapsed="true">
     <Position X="35.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAAAQAAAAACAAAAAABAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <HashCode>AAAEAACQAAAAACAAQAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
       <FileName>ast\block.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CallExpression" Collapsed="true">
     <Position X="11" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAgAIAAAAAAAAAAAAAAAAAAAAAAAAAQABgAAAA=</HashCode>
-      <FileName>ast\CallExpression.h</FileName>
+      <HashCode>AAAAIACgAIAAAAAAAAAAAAAAAAAAAAAAAQAQABAQAAA=</HashCode>
+      <FileName>ast\call_expression.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CallPostfix" Collapsed="true">
     <Position X="4.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAABAAA=</HashCode>
+      <HashCode>AAQEAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAABgAA=</HashCode>
       <FileName>ast\call_postfix.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -66,21 +66,21 @@
   <Class Name="FuncDef" Collapsed="true">
     <Position X="33.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAgBAAAACAEAAAICAAAAAAAAAAABAAAAIAAAABAA=</HashCode>
+      <HashCode>AAAAAgDAAAACAEAAAICAAAAAAAAAAABAAAAIAAAABAA=</HashCode>
       <FileName>ast\function_definition.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IdentifierLiteral" Collapsed="true">
     <Position X="20" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAgAAAAAAAAAAAAAAEBAAAAACAAAAAAIAAAAAA=</HashCode>
+      <HashCode>AAAAIACgAAAAAAAAAAAAAAEBAAAAACAAAAAAIAAQAAA=</HashCode>
       <FileName>ast\identifier_literal.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IfStatement" Collapsed="true">
     <Position X="26.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAQAAAAAAwAAAAAAAAAAAQAAAAQAABgAAIA=</HashCode>
+      <HashCode>AQAAAACAAAQAAAAAAwAAAAAAAAAAAQAAAAQAABgAAIA=</HashCode>
       <FileName>ast\if_statement.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -94,14 +94,14 @@
   <Class Name="MemberPostfix" Collapsed="true">
     <Position X="6.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAgAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAABAMAAAAAAA=</HashCode>
       <FileName>ast\member_postfix.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NumberLiteral" Collapsed="true">
     <Position X="17.75" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEAAAAAgAAAAQAAAAAAABAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AEAAIACgAAAAQAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
       <FileName>ast\number_literal.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -115,14 +115,14 @@
   <Class Name="PrimaryExpression" Collapsed="true">
     <Position X="15.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAgIAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAIAAgIAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ast\primary_expression.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SimpleStatement" Collapsed="true">
     <Position X="31.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAACAAAAAAAAAAAAAIAAAAAAAAAAgBgAgAA=</HashCode>
+      <HashCode>AAAAAACAAAACAAAAAAAAAAAAAIAAAAAAAQAQgBAAgAA=</HashCode>
       <FileName>ast\simple_statement.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -136,7 +136,7 @@
   <Class Name="StringLiteral" Collapsed="true">
     <Position X="15.5" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAgAAAAAAAAAAAABAACAAAAACQAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAIACgAAAAAAAAAAAAAAACAAAAACQAAAAAAAAAAAA=</HashCode>
       <FileName>ast\string_literal.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -150,7 +150,7 @@
   <Class Name="UnaryOperation" Collapsed="true">
     <Position X="24.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAEAAAAAAAAIAAgIAAA=</HashCode>
+      <HashCode>AAAAAACAAAAAAAAACAAAAAAAAAEAAAAAAQAIAAAIAAA=</HashCode>
       <FileName>ast\unary_operation.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -164,7 +164,7 @@
   <Class Name="WhileStatement" Collapsed="true">
     <Position X="29" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAICAAAAAAAAAAAABgABAA=</HashCode>
+      <HashCode>AAACAACAAAAAAAAAAAAAAAAICAAAAAAAAAAAABgABAA=</HashCode>
       <FileName>ast\while_statement.h</FileName>
     </TypeIdentifier>
   </Class>

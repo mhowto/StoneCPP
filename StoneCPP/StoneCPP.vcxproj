@@ -126,17 +126,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ast\ast_leaf.h" />
-    <ClInclude Include="ast\ast_list.h" />
+    <ClInclude Include="ast\array_literal.h" />
+    <ClInclude Include="ast\array_postfix.h" />
     <ClInclude Include="ast\ast.h" />
     <ClInclude Include="ast\binary_operation.h" />
     <ClInclude Include="ast\block.h" />
+    <ClInclude Include="ast\call_expression.h" />
+    <ClInclude Include="ast\call_postfix.h" />
     <ClInclude Include="ast\class_definition.h" />
     <ClInclude Include="ast\function_definition.h" />
     <ClInclude Include="ast\if_statement.h" />
-    <ClInclude Include="ast\name.h" />
+    <ClInclude Include="ast\literal.h" />
+    <ClInclude Include="ast\identifier_literal.h" />
+    <ClInclude Include="ast\member_postfix.h" />
     <ClInclude Include="ast\number_literal.h" />
     <ClInclude Include="ast\operators.h" />
+    <ClInclude Include="ast\postfix.h" />
+    <ClInclude Include="ast\primary_expression.h" />
     <ClInclude Include="ast\string_literal.h" />
     <ClInclude Include="ast\to_string_visitor.h" />
     <ClInclude Include="ast\unary_operation.h" />
@@ -145,8 +151,8 @@
     <ClInclude Include="example.h" />
     <ClInclude Include="ast\expression.h" />
     <ClInclude Include="ast\statement.h" />
+    <ClInclude Include="ast\simple_statement.h" />
     <ClInclude Include="stone_parser.h" />
-    <ClInclude Include="token.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
