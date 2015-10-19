@@ -2,7 +2,6 @@
 #define __OPERATORS_H
 
 #include <iostream>
-#include <cassert>
 
 enum class UnaryOperator
 {
@@ -19,7 +18,7 @@ std::ostream& operator<<(std::ostream& os, const UnaryOperator op)
     case UnaryOperator::PLUS:  return os << "+";
     case UnaryOperator::MINUS: return os << "-";
     }
-    assert(false);
+    return os;
 }
 
 enum class BinaryOperator
@@ -60,7 +59,7 @@ std::ostream& operator<<(std::ostream& os, const BinaryOperator op)
     case BinaryOperator::BITWISE_XOR:   return os << "^";
     case BinaryOperator::COMMA:         return os << ",";
     }
-    assert(false);
+    return os;
 }
 
 #endif

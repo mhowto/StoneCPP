@@ -2,9 +2,9 @@
 #define _CALL_POSTFIX_H
 
 #include "postfix.h"
-#include "visitor.h"
+#include "identifier_literal.h"
 
-class IdentifierLiteral;
+class Visitor;
 
 class CallPostfix : public Postfix
 {
@@ -12,7 +12,7 @@ public:
     CallPostfix(std::vector<Expression*> _args): args(_args) {}
     ~CallPostfix()
     {
-        for (int i = 0; i < args.size(); ++i)
+        for (std::vector<Statement*>::size_type  i = 0; i < args.size(); ++i)
         {
             delete args[i];
         }

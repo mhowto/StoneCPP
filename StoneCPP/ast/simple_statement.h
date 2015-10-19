@@ -3,9 +3,9 @@
 
 
 #include "statement.h"
-#include "visitor.h"
+#include"expression.h"
 
-class Expression;
+class Visitor;
 
 class SimpleStatement : public Statement {
 public:
@@ -15,7 +15,7 @@ public:
     ~SimpleStatement()
     {
         delete expr_;
-        for (int i = 0; i < args_.size(); ++i)
+        for (std::vector<Statement*>::size_type  i = 0; i < args_.size(); ++i)
         {
             delete args_[i];
         }

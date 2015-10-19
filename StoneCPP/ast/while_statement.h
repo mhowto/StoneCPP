@@ -3,9 +3,9 @@
 
 #include "statement.h"
 #include <sstream>
-#include "visitor.h"
+#include "expression.h"
 
-class Expression;
+class Visitor;
 
 class WhileStatement : public Statement {
 public:
@@ -13,7 +13,7 @@ public:
     ~WhileStatement()
     {
         delete expr_;
-        for (int i = 0; i < block_.size(); ++i)
+        for (std::vector<Statement*>::size_type i = 0; i < block_.size(); ++i)
         {
             delete block_[i];
         }

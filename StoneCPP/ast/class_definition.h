@@ -4,11 +4,8 @@
 #include "ast.h"
 #include <string>
 #include <vector>
-#include "visitor.h"
 
-
-class Expression;
-class FuncDef;
+class Visitor;
 
 class ClassDef : public AST
 {
@@ -21,7 +18,7 @@ public:
 
     ~ClassDef()
     {
-        for (int i = 0; i < members.size(); ++i)
+        for (std::vector<Statement*>::size_type  i = 0; i < members.size(); ++i)
         {
             delete members[i];
         }

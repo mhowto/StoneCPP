@@ -2,10 +2,10 @@
 #define _CALL_EXPRESSION_H
 
 #include "primary_expression.h"
-#include "visitor.h"
+#include "expression.h"
+#include "postfix.h"
 
-class Expression;
-class Postfix;
+class Visitor;
 
 class CallExpression : public PrimaryExpression
 {
@@ -16,7 +16,7 @@ public:
     ~CallExpression()
     {
         delete expr_;
-        for (int i = 0; i < postfixs.size(); ++i)
+        for (std::vector<Statement*>::size_type  i = 0; i < postfixs.size(); ++i)
         {
             delete postfixs[i];
         }

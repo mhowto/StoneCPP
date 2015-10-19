@@ -1,5 +1,6 @@
 #include "include_all_ast.h"
 #include "to_string_visitor.h"
+#include <algorithm>
 
 void ToStringVisitor::visit(IfStatement &if_stmt)
 {
@@ -55,7 +56,7 @@ void ToStringVisitor::visit(SimpleStatement &simple_stmt)
     {
         args[0]->accept(*this);
         oss << this->string();
-        for (int i = 1; i < args.size(); ++i)
+        for (std::vector<Expression*>::size_type i = 1; i < args.size(); ++i)
         {
             oss << ',';
             args[i]->accept(*this);
@@ -137,7 +138,7 @@ void ToStringVisitor::visit(CallPostfix & call_postfix)
     {
         args[0]->accept(*this);
         oss << this->string();
-        for (int i = 1; i < args.size(); ++i)
+        for (std::vector<Expression*>::size_type i = 1; i < args.size(); ++i)
         {
             oss << ',';
             args[i]->accept(*this);
@@ -185,7 +186,7 @@ void ToStringVisitor::visit(ArrayLiteral & array_literal)
     {
         elements[0]->accept(*this);
         oss << this->string();
-        for (int i = 1; i < elements.size(); ++i)
+        for (std::vector<Expression*>::size_type i = 1; i < elements.size(); ++i)
         {
             oss << ',';
             elements[i]->accept(*this);
@@ -235,7 +236,7 @@ void ToStringVisitor::visit(Block & block)
         stmts[0]->accept(*this);
         oss << this->string();
 
-        for (int i = 1; i < stmts.size(); ++i)
+        for (std::vector<Statement*>::size_type i = 1; i < stmts.size(); ++i)
         {
             stmts[i]->accept(*this);
             oss << ';' << this->string();

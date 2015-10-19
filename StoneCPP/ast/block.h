@@ -2,16 +2,14 @@
 #define _BLOCK_H
 
 #include "ast.h"
-#include "visitor.h"
-
-class Statement;
+#include "statement.h"
 
 class Block : public AST {
 public:
     Block() = default;
     ~Block()
     {
-        for (int i = 0; i < stmts.size(); ++i)
+        for (std::vector<Statement*>::size_type  i = 0; i < stmts.size(); ++i)
         {
             delete stmts[i];
         }

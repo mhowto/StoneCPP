@@ -4,11 +4,8 @@
 #include "ast.h"
 #include "statement.h"
 #include <string>
-#include <sstream>
-#include <algorithm>
-#include "visitor.h"
 
-class Statement;
+class Visitor;
 
 class FuncDef : public AST
 {
@@ -17,7 +14,7 @@ public:
 
     ~FuncDef()
     {
-        for (int i = 0; i < block.size(); ++i)
+        for (std::vector<Statement*>::size_type  i = 0; i < block.size(); ++i)
         {
             delete block[i];
         }

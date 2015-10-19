@@ -4,9 +4,9 @@
 #include "ast.h"
 #include "statement.h"
 #include <sstream>
-#include "visitor.h"
+#include "expression.h"
 
-class Expression;
+class Visitor;
 
 class IfStatement : public Statement {
 public:
@@ -18,14 +18,13 @@ public:
 
     ~IfStatement()
     {
-
         delete expr_;
-        for (int i = 0; i < if_block_.size(); ++i)
+        for (std::vector<Statement*>::size_type i = 0; i < if_block_.size(); ++i)
         {
             delete if_block_[i];
         }
 
-        for (int i = 0; i < else_block_.size(); ++i)
+        for (std::vector<Statement*>::size_type  i = 0; i < else_block_.size(); ++i)
         {
             delete else_block_[i];
         }

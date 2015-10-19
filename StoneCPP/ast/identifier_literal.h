@@ -3,9 +3,9 @@
 
 #include "literal.h"
 #include <string>
-#include "visitor.h"
+#include "postfix.h"
 
-class Postfix;
+class Visitor;
 
 class IdentifierLiteral : public Literal {
 public:
@@ -14,7 +14,7 @@ public:
 
     ~IdentifierLiteral()
     {
-        for (int i = 0; i < postfixs.size(); ++i)
+        for (std::vector<Statement*>::size_type i = 0; i < postfixs.size(); ++i)
         {
             delete postfixs[i];
         }

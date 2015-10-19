@@ -2,9 +2,9 @@
 #define _ARRAY_LITERAL_H
 
 #include "literal.h"
-#include "visitor.h"
+#include "expression.h"
 
-class Expression;
+class Visitor;
 
 class ArrayLiteral : public Literal
 {
@@ -13,7 +13,7 @@ public:
 
     ~ArrayLiteral()
     {
-        for (int i = 0; i < elements.size(); ++i)
+        for (std::vector<Statement*>::size_type  i = 0; i < elements.size(); ++i)
         {
             delete elements[i];
         }
