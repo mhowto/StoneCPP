@@ -40,8 +40,6 @@ add_subdirectory(ast)
 
 set(HEADER_FILES
 stone_parser.h
-example.h
-token.h
 )
 
 set(SOURCE_FILES
