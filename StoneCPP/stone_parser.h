@@ -299,9 +299,9 @@ struct StoneGrammar
             ;
 
         postfix
-            = qi::lit('.') >> tok.identifier
-            | '(' >> expression >> *(',' >> expression) >> ')'
-            | '[' >> expression >> ']'
+            = qi::lit('.') >> tok.identifier [qi::_val = phx::new_<MemberPostfix>(qi::_1)]
+            | '(' >> expression >> *(',' >> expression) >> ')' [qi::_val = phx::new_<CallPostfix>(qi:]
+            | '[' >> expression >> ']' [qi::_val = phx::new_<ArrayPostfix>(qi::_1)]
             ;
     }
 

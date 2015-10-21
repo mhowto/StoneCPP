@@ -9,7 +9,7 @@
 
 class BinaryOperation : public Expression {
 public:
-    BinaryOperation(BinaryOperator op, AST* lhs_, AST* rhs_): op(op), lhs(lhs), rhs(rhs_) {}
+    BinaryOperation(BinaryOperator op, AST* lhs_, AST* rhs_): op(op), lhs(lhs_), rhs(rhs_) {}
 
     BinaryOperator get_op()
     {
