@@ -9,6 +9,7 @@ class Visitor;
 class CallPostfix : public Postfix
 {
 public:
+    CallPostfix(Expression* arg): args({arg}) {}
     CallPostfix(std::vector<Expression*> _args): args(_args) {}
     ~CallPostfix()
     {
@@ -20,7 +21,7 @@ public:
 
     virtual void accept(Visitor& visitor) override;
 
-    std::vector<Expression*> get_args()
+    std::vector<Expression*> get_args() const
     {
         return args;
     }

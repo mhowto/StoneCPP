@@ -11,7 +11,7 @@ class PrimaryExpression :public Expression
 public:
     PrimaryExpression() = default;
     virtual ~PrimaryExpression() = 0;
-    virtual std::vector<Postfix*> get_postfixs() = 0;
+    virtual std::vector<Postfix*> get_postfixs() const = 0;
     virtual void push_postfix(Postfix*) = 0;
 };
 

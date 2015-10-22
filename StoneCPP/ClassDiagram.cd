@@ -38,7 +38,7 @@
   <Class Name="CallExpression" Collapsed="true">
     <Position X="11" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIACgAIAAAAAAAAAAAAAAAAAAAAAAAQAQABAQAAA=</HashCode>
+      <HashCode>AAAAIACgAIAAAAAAAAAAAAAAAAAAABAAAQAQABAQAAA=</HashCode>
       <FileName>ast\call_expression.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -87,14 +87,14 @@
   <Class Name="Literal" Collapsed="true">
     <Position X="16.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
       <FileName>ast\literal.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MemberPostfix" Collapsed="true">
     <Position X="6.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAABAMAAAAAAA=</HashCode>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAABAABAMAAAAAAA=</HashCode>
       <FileName>ast\member_postfix.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -168,17 +168,17 @@
       <FileName>ast\while_statement.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="StoneGrammar&lt;Iterator, Lexer&gt;" Collapsed="true">
-    <Position X="38.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ACIAAAIQiAKEIAAgAAIASDRAADEAACBAEMEAQAACJAE=</HashCode>
-      <FileName>stone_parser.h</FileName>
-    </TypeIdentifier>
-  </Struct>
   <Struct Name="StoneToken&lt;Lexer&gt;" Collapsed="true">
     <Position X="40" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAQAAAAAAAAAACAAAAAABAAAAAAAAQAAA=</HashCode>
+      <FileName>stone_parser.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="StoneGrammar&lt;Iterator, Lexer&gt;" Collapsed="true">
+    <Position X="38.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAIQiAKEcAAgAAIASDRAADEAACBAGMEQQAACJAE=</HashCode>
       <FileName>stone_parser.h</FileName>
     </TypeIdentifier>
   </Struct>

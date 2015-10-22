@@ -9,6 +9,9 @@
 #include <boost/spirit/include/lex_lexertl.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 
+#include <boost/fusion/adapted/adt/adapt_adt.hpp>
+#include <boost/fusion/include/adapt_adt.hpp>
+
 #include <boost/variant.hpp>
 
 #include <iostream>
@@ -85,8 +88,16 @@ typedef boost::variant <
 */
 
 
-//BOOST_FUSION_ADAPT_STRUCT(BinaryOperation, (BinaryOperator, op), (std::vector<ASTree*>, children))
-//BOOST_FUSION_ADAPT_STRUCT(ASTree, (std::vector<ASTree*>, children))
+BOOST_FUSION_ADAPT_ADT(
+    CallExpression,
+    (Expression*, Expression*, obj.get_expr(), obj.set_expr(val))
+    (std::vector<Postfix*>, std::vector<Postfix*> , obj.get_postfixs(), (void)()))
+
+BOOST_FUSION_ADAPT_ADT(
+    CallPostfix,
+    (std::vector<Expression*>, std::vector<Expression*>, obj.get_args(), (void)()))
+    
+
 template <typename Iterator, typename Lexer>
 struct StoneGrammar
     : qi::grammar<Iterator, qi::in_state_skipper<Lexer>, AST*() >
@@ -291,8 +302,8 @@ struct StoneGrammar
             ;
 
         primary
-            = qi::lit('[') >> -(expression >> *(qi::lit(',') >> expression))
-            | qi::lit('(') >> expression >> ')' >> *(postfix)
+            = qi::lit('[') [qi::_val = phx::new_<ArrayLiteral>()] >> -(expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)]>> *(qi::lit(',') >> expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)])) >> qi::lit[']']
+            | qi::lit('(') >> expression [qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix [phx::push_back(phx::at_c<1>(qi::_val), qi::_1)])
             | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix)
             | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
             | tok.string_literal[qi::_val = phx::new_<StringLiteral>(qi::_1)]
@@ -300,8 +311,8 @@ struct StoneGrammar
 
         postfix
             = qi::lit('.') >> tok.identifier [qi::_val = phx::new_<MemberPostfix>(qi::_1)]
-            | '(' >> expression >> *(',' >> expression) >> ')' [qi::_val = phx::new_<CallPostfix>(qi:]
-            | '[' >> expression >> ']' [qi::_val = phx::new_<ArrayPostfix>(qi::_1)]
+            | '(' >> expression [qi::_val = phx::new_<CallPostfix>(qi::_1)] >> *(',' >> expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)]) >> ')'
+            | '[' >> expression [qi::_val = phx::new_<ArrayPostfix>(qi::_1)] >> ']' 
             ;
     }
 

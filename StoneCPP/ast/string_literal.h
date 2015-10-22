@@ -17,7 +17,7 @@ public:
         return string_literal;
     }
 
-    virtual std::vector<Postfix*> get_postfixs() override
+    virtual std::vector<Postfix*> get_postfixs() const override
     {
         return std::vector<Postfix*>();
     }

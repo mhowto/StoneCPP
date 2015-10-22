@@ -22,12 +22,17 @@ public:
         }
     }
 
-    Expression* get_expr()
+    Expression* get_expr() const
     {
         return expr_;
     }
 
-    virtual std::vector<Postfix*> get_postfixs() override
+    Expression* set_expr(Expression *expr)
+    {
+        expr_ = expr;
+    }
+
+    virtual std::vector<Postfix*> get_postfixs() const override
     {
         return postfixs;
     }

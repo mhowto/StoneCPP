@@ -12,7 +12,7 @@ public:
 
     int value() { return  number; }
 
-    virtual std::vector<Postfix*> get_postfixs() override
+    virtual std::vector<Postfix*> get_postfixs() const override
     {
         return std::vector<Postfix*>();
     }

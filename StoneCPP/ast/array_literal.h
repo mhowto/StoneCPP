@@ -9,6 +9,7 @@ class Visitor;
 class ArrayLiteral : public Literal
 {
 public:
+    ArrayLiteral() = default;
     ArrayLiteral(std::vector<Expression*> _ele): elements(_ele) {}
 
     ~ArrayLiteral()
@@ -29,7 +30,7 @@ public:
         return elements;
     }
 
-    virtual std::vector<Postfix*> get_postfixs() override
+    virtual std::vector<Postfix*> get_postfixs() const override
     {
         return std::vector<Postfix*>();
     }

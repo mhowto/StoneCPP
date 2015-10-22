@@ -25,7 +25,7 @@ public:
         return identifier_name;
     }
 
-    virtual std::vector<Postfix*> get_postfixs() override
+    virtual std::vector<Postfix*> get_postfixs() const override
     {
         return postfixs;
     }
