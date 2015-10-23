@@ -302,16 +302,33 @@ struct StoneGrammar
             ;
 
         primary
-            = qi::lit('[') [qi::_val = phx::new_<ArrayLiteral>()] >> -(expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)]>> *(qi::lit(',') >> expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)])) >> qi::lit[']']
-            | qi::lit('(') >> expression [qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix [phx::push_back(phx::at_c<1>(qi::_val), qi::_1)])
-            | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix)
+            = array_literal
+            | empty_array_literal
+            | call_expr
+            //qi::lit('[') >> -(expression )>> *(qi::lit(',') >> expression) >> qi::lit[']']
+            //= qi::lit('[')  >> -(expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)]>> *(qi::lit(',') >> expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)])) >> qi::lit[']']
+//            | qi::lit('(') >> expression [qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
+            | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
             | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
             | tok.string_literal[qi::_val = phx::new_<StringLiteral>(qi::_1)]
             ;
 
+        array_literal
+            = qi::lit('[') >> expression[qi::_val = phx::new_<ArrayLiteral>(qi::_1)] ] >> *(qi::lit(',') >> expression[phx::push_back(phx::at_c<0>(*qi::_val), qi::_1)])) >> qi::lit[']']
+            //= qi::lit('[')[qi::_val = phx::new_<ArrayLiteral>()] >> -(expression[phx::push_back(*phx::at_c<0>(qi::_val), qi::_1)] >> *(qi::lit(',') >> expression[phx::push_back(phx::at_c<0>(*qi::_val), qi::_1)])) >> qi::lit[']']
+            ;
+
+        empty_array_literal
+            = qi::lit("[") >> qi::lit("]")[qi::_val = phx::new_<ArrayLiteral>()]
+            ;
+
+        call_expr
+            = qi::lit('(') >> expression[qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix[phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
+            ;
+
         postfix
             = qi::lit('.') >> tok.identifier [qi::_val = phx::new_<MemberPostfix>(qi::_1)]
-            | '(' >> expression [qi::_val = phx::new_<CallPostfix>(qi::_1)] >> *(',' >> expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)]) >> ')'
+            | '(' >> expression [qi::_val = phx::new_<CallPostfix>(qi::_1)] >> *(',' >> expression [phx::push_back(*phx::at_c<0>(qi::_val), qi::_1)]) >> ')'
             | '[' >> expression [qi::_val = phx::new_<ArrayPostfix>(qi::_1)] >> ']' 
             ;
     }
@@ -345,6 +362,10 @@ struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, UnaryOperation*() > value;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, PrimaryExpression*() > primary;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, CallExpression*() > call_expr;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ArrayLiteral*() > array_literal;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, ArrayLiteral*() > empty_array_literal;
+
 
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, Postfix*() > postfix;
 

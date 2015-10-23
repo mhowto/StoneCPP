@@ -11,6 +11,7 @@ class ArrayLiteral : public Literal
 public:
     ArrayLiteral() = default;
     ArrayLiteral(std::vector<Expression*> _ele): elements(_ele) {}
+    ArrayLiteral(Expression* _ele) : elements({ _ele }) {}
 
     ~ArrayLiteral()
     {
