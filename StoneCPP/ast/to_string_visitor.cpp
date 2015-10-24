@@ -6,9 +6,9 @@ void ToStringVisitor::visit(IfStatement &if_stmt)
 {
     std::stringstream oss;
     oss << "if ";
-    if_stmt.expr()->accept(*this);
+    if_stmt.get_expr()->accept(*this);
     oss << this->string() << '{';
-    std::vector<Statement*> if_block_ = if_stmt.if_block();
+    std::vector<Statement*> if_block_ = if_stmt.get_if_block();
     std::for_each(if_block_.begin(), if_block_.end(),
         [&oss, this](Statement* stmt) {
         stmt->accept(*this);
@@ -16,7 +16,7 @@ void ToStringVisitor::visit(IfStatement &if_stmt)
     });
     oss << '}';
 
-    std::vector<Statement*> else_block_ = if_stmt.else_block();
+    std::vector<Statement*> else_block_ = if_stmt.get_else_block();
     if (else_block_.size() != 0)
     {
         oss << "else {";
@@ -34,9 +34,9 @@ void ToStringVisitor::visit(WhileStatement & while_stmt)
 {
     std::stringstream oss;
     oss << "while ";
-    while_stmt.expr()->accept(*this);
+    while_stmt.get_expr()->accept(*this);
     oss << this->string() << '{';
-    std::vector<Statement*> block = while_stmt.block();
+    std::vector<Statement*> block = while_stmt.get_block();
     std::for_each(block.begin(), block.end(),
         [&oss, this](Statement* stmt) {
         stmt->accept(*this);
@@ -88,7 +88,7 @@ void ToStringVisitor::visit(FuncDef & func_def)
         [&oss, this](std::string param) {
         oss << param << ',';
     });
-    oss << ') {';
+    oss << ") {";
     for (auto stmt : func_def.get_block())
     {
         stmt->accept(*this);

@@ -20,9 +20,14 @@ public:
         stmts.push_back(stmt);
     }
 
-    std::vector<Statement*> get_statements()
+    std::vector<Statement*> get_statements() const
     {
         return stmts;
+    }
+
+    void set_statements(std::vector<Statement*> val)
+    {
+        stmts = val;
     }
 
     virtual void accept(Visitor& visitor);

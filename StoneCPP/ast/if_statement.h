@@ -30,19 +30,34 @@ public:
         }
     }
     
-    Expression* expr() 
+    Expression* get_expr() const
     {
         return expr_;
     }
 
-    std::vector<Statement*> if_block()
+    void set_expr(Expression* val)
+    {
+        expr_ = val;
+    }
+
+    std::vector<Statement*> get_if_block() const
     {
         return if_block_;
     }
 
-    std::vector<Statement*> else_block()
+    void set_if_block(std::vector<Statement*> val)
+    {
+        if_block_ = val;
+    }
+
+    std::vector<Statement*> get_else_block() const
     {
         return else_block_;
+    }
+
+    void set_else_block(std::vector<Statement*> val)
+    {
+        else_block_ = val;
     }
 
     void push_if_stmt(Statement* stmt)

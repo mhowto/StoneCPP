@@ -6,6 +6,11 @@
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix.hpp>
+#include <boost/spirit/include/phoenix_core.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/spirit/include/phoenix_fusion.hpp>
+#include <boost/spirit/include/phoenix_stl.hpp>
+#include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/spirit/include/lex_lexertl.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 
@@ -86,17 +91,47 @@ typedef boost::variant <
     primary_type
 > value_type;
 */
+BOOST_FUSION_ADAPT_ADT(
+    ClassDef,
+    (std::string, std::string const, obj.get_identifier(), obj.set_identifier(val))
+    (std::string, std::string const, obj.get_extended_identifier(), obj.set_extended_identifier(val))
+    (std::vector<ClassDef::member_type>, std::vector<ClassDef::member_type>, obj.get_members(), obj.set_members(val)))
 
+BOOST_FUSION_ADAPT_ADT(
+    FuncDef,
+    (std::string, std::string const, obj.get_identifier(), obj.set_identifier(val))
+    (std::vector<std::string>, std::vector<std::string>, obj.get_params(), obj.set_params(val))
+    (std::vector<Statement*>, std::vector<Statement*>, obj.get_block(), obj.set_block(val)))
+
+
+BOOST_FUSION_ADAPT_ADT(
+    Block,
+    (std::vector<Statement*>, std::vector<Statement*>, obj.get_statements(), obj.set_statements(val)))
+
+BOOST_FUSION_ADAPT_ADT(
+    IfStatement,
+    (Expression*, Expression*, obj.get_expr(), obj.set_expr(val))
+    (std::vector<Statement*>, std::vector<Statement*>, obj.get_if_block(), obj.set_if_block(val))
+    (std::vector<Statement*>, std::vector<Statement*>, obj.get_else_block(), obj.set_else_block(val)))
+
+BOOST_FUSION_ADAPT_ADT(
+    WhileStatement,
+    (Expression*, Expression*, obj.get_expr(), obj.set_expr(val))
+    (std::vector<Statement*>, std::vector<Statement*>, obj.get_block(), obj.set_block(val)))
+
+BOOST_FUSION_ADAPT_ADT(
+    SimpleStatement,
+    (Expression*, Expression*, obj.get_expr(), obj.set_expr(val))
+    (std::vector<Expression*>, std::vector<Expression*>, obj.get_args(), obj.set_args(val)))
 
 BOOST_FUSION_ADAPT_ADT(
     CallExpression,
     (Expression*, Expression*, obj.get_expr(), obj.set_expr(val))
-    (std::vector<Postfix*>, std::vector<Postfix*> , obj.get_postfixs(), (void)()))
+    (std::vector<Postfix*>, std::vector<Postfix*> , obj.get_postfixs(), obj.set_postfixs(val)))
 
 BOOST_FUSION_ADAPT_ADT(
     CallPostfix,
-    (std::vector<Expression*>, std::vector<Expression*>, obj.get_args(), (void)()))
-    
+    (std::vector<Expression*>, std::vector<Expression*>, obj.get_args(), obj.set_args(val)))
 
 template <typename Iterator, typename Lexer>
 struct StoneGrammar
@@ -227,6 +262,7 @@ struct StoneGrammar
             ;
 
         block
+            //= qi::lit('{') >> -(statement [qi::_val = phx::new_<Statement>(qi::_1)] >> *((qi::lit(';') | '\n') >> -(statement [phx::push_pack(*phx::at_c<1>(qi::_val), qi::_1)])) >> '}'
             = qi::lit('{') >> -statement >> *((qi::lit(';') | '\n') >> -statement) >> '}'
             ;
 
@@ -248,7 +284,8 @@ struct StoneGrammar
             = "while" >> expression >> block;
 
         simple_stmt
-            = expression >> -(expression >> *(qi::lit(',') >> expression))
+            //= expression >> -(expression >> *(qi::lit(',') >> expression))
+            = expression >> -args;
             ;
 
         expression
@@ -281,7 +318,7 @@ struct StoneGrammar
         lowerGreater
             = shift[qi::_val = qi::_1] >> -(lowerGreaterOp >> shift)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
             ;
-       
+ 
         shift
             = addSub[qi::_val = qi::_1] >> -(shiftOp >> addSub)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
             ;
@@ -308,13 +345,13 @@ struct StoneGrammar
             //qi::lit('[') >> -(expression )>> *(qi::lit(',') >> expression) >> qi::lit[']']
             //= qi::lit('[')  >> -(expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)]>> *(qi::lit(',') >> expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)])) >> qi::lit[']']
 //            | qi::lit('(') >> expression [qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
-            | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
-            | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
+            | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)]) | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
             | tok.string_literal[qi::_val = phx::new_<StringLiteral>(qi::_1)]
             ;
 
         array_literal
-            = qi::lit('[') >> expression[qi::_val = phx::new_<ArrayLiteral>(qi::_1)] ] >> *(qi::lit(',') >> expression[phx::push_back(phx::at_c<0>(*qi::_val), qi::_1)])) >> qi::lit[']']
+            //= qi::lit('[') >> expression[qi::_val = phx::new_<ArrayLiteral>(qi::_1)] >> *(qi::lit(',') >> expression[phx::push_back(*phx::at_c<0>(*qi::_val), qi::_1)]) >> qi::lit[']']
+            = qi::lit('[') >> args [qi::_val = phx::new_<ArrayLiteral>(qi::_1)] >> qi::lit[']']
             //= qi::lit('[')[qi::_val = phx::new_<ArrayLiteral>()] >> -(expression[phx::push_back(*phx::at_c<0>(qi::_val), qi::_1)] >> *(qi::lit(',') >> expression[phx::push_back(phx::at_c<0>(*qi::_val), qi::_1)])) >> qi::lit[']']
             ;
 
@@ -328,8 +365,13 @@ struct StoneGrammar
 
         postfix
             = qi::lit('.') >> tok.identifier [qi::_val = phx::new_<MemberPostfix>(qi::_1)]
-            | '(' >> expression [qi::_val = phx::new_<CallPostfix>(qi::_1)] >> *(',' >> expression [phx::push_back(*phx::at_c<0>(qi::_val), qi::_1)]) >> ')'
+            //| '(' >> expression [qi::_val = phx::new_<CallPostfix>(qi::_1)] >> *(',' >> expression [phx::push_back(*phx::at_c<0>(qi::_val), qi::_1)]) >> ')'
+            | '(' >> args [qi::_val = phx::new_<CallPostfix>(qi::_1)] >> ')'
             | '[' >> expression [qi::_val = phx::new_<ArrayPostfix>(qi::_1)] >> ']' 
+            ;
+
+        args
+            = expression >> *(',' >> expression)
             ;
     }
 
@@ -345,7 +387,8 @@ struct StoneGrammar
 
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, std::vector<std::string>()> param_list;
 
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, Block*() > block;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer>, Block*() > block;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, std::vector<Statement*>() > block;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer> > program, block, statement;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > assignment;
 
@@ -368,6 +411,7 @@ struct StoneGrammar
 
 
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, Postfix*() > postfix;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, std::vector<Expression*>() > args;
 
     //  the expression is the only rule having a return value
     //qi::rule<Iterator, expression_type(), qi::in_state_skipper<Lexer> >  expression;

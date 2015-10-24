@@ -26,6 +26,11 @@ public:
         return args;
     }
 
+    void set_args(std::vector<Expression*> val)
+    {
+        args = val;
+    }
+
     void push_arg(Expression* _arg)
     {
         args.push_back(_arg);

@@ -21,14 +21,24 @@ public:
         }
     }
 
-    Expression* get_expr()
+    Expression* get_expr() const
     {
         return expr_;
     }
 
-    std::vector<Expression*> get_args()
+    void set_expr(Expression* val)
+    {
+        expr_ = val;
+    }
+
+    std::vector<Expression*> get_args() const
     {
         return args_;
+    }
+
+    void set_args(std::vector<Expression*> val)
+    {
+        args_ = val;
     }
 
     void push_arg(Expression* _arg)

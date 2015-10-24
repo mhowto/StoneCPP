@@ -20,19 +20,34 @@ public:
         }
     }
 
-    std::string get_identifier()
+    std::string get_identifier() const
     {
         return identifier;
     }
 
-    std::vector<std::string> get_params()
+    void set_identifier(std::string val)
+    {
+        identifier = val;
+    }
+
+    std::vector<std::string> get_params() const
     {
         return params;
     }
 
-    std::vector<Statement*> get_block()
+    void set_params(std::vector<std::string> val)
+    {
+        params = val;
+    }
+
+    std::vector<Statement*> get_block() const
     {
         return block;
+    }
+
+    void set_block(std::vector<Statement*> val)
+    {
+        block = val;
     }
 
     void push_statment(Statement* stmt)

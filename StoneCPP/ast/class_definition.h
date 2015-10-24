@@ -14,7 +14,7 @@ public:
     typedef AST* member_type;
 
     ClassDef(std::string iden) : identifier(iden) {}
-    ClassDef(std::string iden, std::string ext_iden) : identifier(iden), extented_identifier(ext_iden) {}
+    ClassDef(std::string iden, std::string ext_iden) : identifier(iden), extended_identifier(ext_iden) {}
 
     ~ClassDef()
     {
@@ -24,26 +24,41 @@ public:
         }
     }
 
-    std::string get_identifier()
+    std::string get_identifier() const
     {
         return identifier;
     }
 
-    std::string get_extended_identifier()
+    void set_identifier(std::string val)
     {
-        return extented_identifier;
+        identifier = val;
     }
 
-    std::vector<member_type> get_members()
+    std::string get_extended_identifier() const
+    {
+        return extended_identifier;
+    }
+
+    void set_extended_identifier(std::string val)
+    {
+        extended_identifier = val;
+    }
+
+    std::vector<member_type> get_members() const
     {
         return members;
+    }
+
+    void set_members(std::vector<member_type> val)
+    {
+        members = val;
     }
 
     virtual void accept(Visitor& visitor) override;
 
 private:
     std::string identifier;
-    std::string extented_identifier;
+    std::string extended_identifier;
     std::vector<member_type> members;
 };
 

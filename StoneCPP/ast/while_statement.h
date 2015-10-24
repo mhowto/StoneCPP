@@ -19,12 +19,22 @@ public:
         }
     }
 
-    Expression* expr()
+    Expression* get_expr() const
     {
         return expr_;
     }
 
-    std::vector<Statement*> block()
+    void set_expr(Expression* val)
+    {
+        expr_ = val;
+    }
+
+    void set_block(std::vector<Statement*> val)
+    {
+        block_ = val;
+    }
+
+    std::vector<Statement*> get_block() const
     {
         return block_;
     }

@@ -16,7 +16,7 @@ public:
     ~CallExpression()
     {
         delete expr_;
-        for (std::vector<Statement*>::size_type  i = 0; i < postfixs.size(); ++i)
+        for (std::vector<Postfix*>::size_type  i = 0; i < postfixs.size(); ++i)
         {
             delete postfixs[i];
         }
@@ -27,7 +27,7 @@ public:
         return expr_;
     }
 
-    Expression* set_expr(Expression *expr)
+    void set_expr(Expression *expr)
     {
         expr_ = expr;
     }
@@ -35,6 +35,11 @@ public:
     virtual std::vector<Postfix*> get_postfixs() const override
     {
         return postfixs;
+    }
+
+    void set_postfixs(std::vector<Postfix*> val)
+    {
+        postfixs = val;
     }
 
     virtual void push_postfix(Postfix* postfix) override
