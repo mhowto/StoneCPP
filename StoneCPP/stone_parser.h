@@ -18,6 +18,7 @@
 #include <boost/fusion/include/adapt_adt.hpp>
 
 #include <boost/variant.hpp>
+#include <boost/bind.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -245,7 +246,7 @@ struct StoneGrammar
             ;
 
         class_def
-            = qi::lit("class") >> tok.identifier >> -(qi::lit("extends") >> tok.identifier) >> class_body
+            = qi::lit("class") >> tok.identifier[boost::bind(ClassDef::set_identifier, qi::_val, _1)]/*[qi::_val = phx::new_<ClassDef>(qi::_1)]*/ >> -(qi::lit("extends") >> tok.identifier[boost::bind(ClassDef::set_extended_identifier, qi::_val, _1)]/*[qi::_val->set_extended_identifier(qi::_1)]*/) >> class_body[boost::bind(ClassDef::set_members, qi::_val, _1)]/*[qi::_val->set_members(qi::_1)]*/
             ;
 
         class_body
@@ -258,7 +259,7 @@ struct StoneGrammar
             ;
             
         func_def
-            = qi::lit("def") >> tok.identifier >> param_list >> block
+            = qi::lit("def") >> tok.identifier [qi::_val = phx::new_<FuncDef>(qi::_1)] >> param_list [boost::bind(FuncDef::set_params, qi::_val, _1)] /*[qi::_val->set_params(qi::_1)]*/ >> block[boost::bind(FuncDef::set_block, qi::_val, _1)] /*[qi::_val->set_block(qi::_1)]*/
             ;
 
         block
@@ -277,15 +278,15 @@ struct StoneGrammar
             ;
 
         if_stmt
-            = "if" >> expression >> block >> -("else" >> block)
+            = "if" >> expression [qi::_val = phx::new_<IfStatement>(qi::_1)] >> block [boost::bind(IfStatement::set_if_block, qi::_val, _1)]/*[qi::_val->set_if_ block(qi::_1)]*/ >> -("else" >> block [boost::bind(IfStatement::set_else_block, qi::_val, _1)]/*[qi::_val->set_else_block(qi::_1)]*/)
             ;
 
         while_stmt
-            = "while" >> expression >> block;
+            = "while" >> expression [qi::_val = phx::new_<WhileStatement>(qi::_1)] >> block [boost::bind(WhileStatement::set_block, qi::_val, _1)]//[qi::_val->set_block(qi::_1)];
 
         simple_stmt
             //= expression >> -(expression >> *(qi::lit(',') >> expression))
-            = expression >> -args;
+            = expression[qi::_val = phx::new_<SimpleStatement>(qi::_1)] >> -args[boost::bind(SimpleStatement::set_args, qi::_val, _1)]// phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)];
             ;
 
         expression
