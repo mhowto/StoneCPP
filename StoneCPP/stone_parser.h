@@ -134,8 +134,12 @@ BOOST_FUSION_ADAPT_ADT(
     CallPostfix,
     (std::vector<Expression*>, std::vector<Expression*>, obj.get_args(), obj.set_args(val)))
 
-template <typename Iterator, typename Lexer>
-struct StoneGrammar
+BOOST_FUSION_ADAPT_ADT(
+    IdentifierLiteral,
+    (std::string, std::string const, obj.get_identifier(), obj.set_identifier(val))
+    (std::vector<Postfix*>, std::vector<Postfix*>, obj.get_postfixs(), obj.set_postfixs(val)))
+
+template <typename Iterator, typename Lexer> struct StoneGrammar
     : qi::grammar<Iterator, qi::in_state_skipper<Lexer>, AST*() >
 {
         template <typename TokenDef>
@@ -246,7 +250,8 @@ struct StoneGrammar
             ;
 
         class_def
-            = qi::lit("class") >> tok.identifier[boost::bind(ClassDef::set_identifier, qi::_val, _1)]/*[qi::_val = phx::new_<ClassDef>(qi::_1)]*/ >> -(qi::lit("extends") >> tok.identifier[boost::bind(ClassDef::set_extended_identifier, qi::_val, _1)]/*[qi::_val->set_extended_identifier(qi::_1)]*/) >> class_body[boost::bind(ClassDef::set_members, qi::_val, _1)]/*[qi::_val->set_members(qi::_1)]*/
+            //= qi::lit("class") >> tok.identifier[qi::_val = phx::new_<ClassDef>(qi::_1)] >> -(qi::lit("extends") >> tok.identifier[boost::bind(&ClassDef::set_extended_identifier, qi::_val, _1)]/*[qi::_val->set_extended_identifier(qi::_1)]*/) >> class_body[boost::bind(&ClassDef::set_members, qi::_val, _1)]/*[qi::_val->set_members(qi::_1)]*/
+            = qi::lit("class") >> tok.identifier[qi::_val = phx::new_<ClassDef>(qi::_1)] >> -(qi::lit("extends") >> tok.identifier[phx::bind(&ClassDef::set_extended_identifier, qi::_val, qi::_1)]/*[qi::_val->set_extended_identifier(qi::_1)]*/) >> class_body[phx::bind(&ClassDef::set_members, qi::_val, qi::_1)]/*[qi::_val->set_members(qi::_1)]*/
             ;
 
         class_body
@@ -259,7 +264,8 @@ struct StoneGrammar
             ;
             
         func_def
-            = qi::lit("def") >> tok.identifier [qi::_val = phx::new_<FuncDef>(qi::_1)] >> param_list [boost::bind(FuncDef::set_params, qi::_val, _1)] /*[qi::_val->set_params(qi::_1)]*/ >> block[boost::bind(FuncDef::set_block, qi::_val, _1)] /*[qi::_val->set_block(qi::_1)]*/
+            //= qi::lit("def") >> tok.identifier [qi::_val = phx::new_<FuncDef>(qi::_1)] >> param_list [boost::bind(&FuncDef::set_params, qi::_val, _1)] /*[qi::_val->set_params(qi::_1)]*/ >> block[boost::bind(&FuncDef::set_block, qi::_val, _1)] /*[qi::_val->set_block(qi::_1)]*/
+            = qi::lit("def") >> tok.identifier [qi::_val = phx::new_<FuncDef>(qi::_1)] >> param_list [phx::bind(&FuncDef::set_params, qi::_val, qi::_1)] /*[qi::_val->set_params(qi::_1)]*/ >> block[phx::bind(&FuncDef::set_block, qi::_val, qi::_1)] /*[qi::_val->set_block(qi::_1)]*/
             ;
 
         block
@@ -278,15 +284,19 @@ struct StoneGrammar
             ;
 
         if_stmt
-            = "if" >> expression [qi::_val = phx::new_<IfStatement>(qi::_1)] >> block [boost::bind(IfStatement::set_if_block, qi::_val, _1)]/*[qi::_val->set_if_ block(qi::_1)]*/ >> -("else" >> block [boost::bind(IfStatement::set_else_block, qi::_val, _1)]/*[qi::_val->set_else_block(qi::_1)]*/)
+            //= "if" >> expression [qi::_val = phx::new_<IfStatement>(qi::_1)] >> block [boost::bind(&IfStatement::set_if_block, qi::_val, _1)]/*[qi::_val->set_if_ block(qi::_1)]*/ >> -("else" >> block [boost::bind(&IfStatement::set_else_block, qi::_val, _1)]/*[qi::_val->set_else_block(qi::_1)]*/)
+            = "if" >> expression [qi::_val = phx::new_<IfStatement>(qi::_1)] >> block [phx::bind(&IfStatement::set_if_block, qi::_val, qi::_1)]/*[qi::_val->set_if_ block(qi::_1)]*/ >> -("else" >> block [phx::bind(&IfStatement::set_else_block, qi::_val, qi::_1)]/*[qi::_val->set_else_block(qi::_1)]*/)
             ;
 
         while_stmt
-            = "while" >> expression [qi::_val = phx::new_<WhileStatement>(qi::_1)] >> block [boost::bind(WhileStatement::set_block, qi::_val, _1)]//[qi::_val->set_block(qi::_1)];
+            //= "while" >> expression [qi::_val = phx::new_<WhileStatement>(qi::_1)] >> block [boost::bind(&WhileStatement::set_block, qi::_val, _1)]//[qi::_val->set_block(qi::_1)]
+            = "while" >> expression [qi::_val = phx::new_<WhileStatement>(qi::_1)] >> block [phx::bind(&WhileStatement::set_block, qi::_val, qi::_1)]//[qi::_val->set_block(qi::_1)]
+            ;
 
         simple_stmt
             //= expression >> -(expression >> *(qi::lit(',') >> expression))
-            = expression[qi::_val = phx::new_<SimpleStatement>(qi::_1)] >> -args[boost::bind(SimpleStatement::set_args, qi::_val, _1)]// phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)];
+            //= expression[qi::_val = phx::new_<SimpleStatement>(qi::_1)] >> -args[boost::bind(&SimpleStatement::set_args, qi::_val, _1)]// phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)];
+            = expression[qi::_val = phx::new_<SimpleStatement>(qi::_1)] >> -args[phx::bind(&SimpleStatement::set_args, qi::_val, qi::_1)]// phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)];
             ;
 
         expression
@@ -329,7 +339,8 @@ struct StoneGrammar
             ;
 
         multDivMod
-            = value[qi::_val = qi::_1] >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            //= value[qi::_val = qi::_1] >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            = value[qi::_val = phx::new_<BinaryOperation>(BinaryOperator::NONE, qi::_1, nullptr)] >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
             ;
 
         value
@@ -346,22 +357,34 @@ struct StoneGrammar
             //qi::lit('[') >> -(expression )>> *(qi::lit(',') >> expression) >> qi::lit[']']
             //= qi::lit('[')  >> -(expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)]>> *(qi::lit(',') >> expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)])) >> qi::lit[']']
 //            | qi::lit('(') >> expression [qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
-            | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)]) | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
+            //| tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)]) //| tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
+            | identifier_primary
+            | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)]
+            | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
             | tok.string_literal[qi::_val = phx::new_<StringLiteral>(qi::_1)]
             ;
 
+        identifier_primary
+            = tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
+            ;
+
         array_literal
-            //= qi::lit('[') >> expression[qi::_val = phx::new_<ArrayLiteral>(qi::_1)] >> *(qi::lit(',') >> expression[phx::push_back(*phx::at_c<0>(*qi::_val), qi::_1)]) >> qi::lit[']']
-            = qi::lit('[') >> args [qi::_val = phx::new_<ArrayLiteral>(qi::_1)] >> qi::lit[']']
-            //= qi::lit('[')[qi::_val = phx::new_<ArrayLiteral>()] >> -(expression[phx::push_back(*phx::at_c<0>(qi::_val), qi::_1)] >> *(qi::lit(',') >> expression[phx::push_back(phx::at_c<0>(*qi::_val), qi::_1)])) >> qi::lit[']']
+            //= qi::lit('[') >> expression[qi::_val = phx::new_<ArrayLiteral>(qi::_1)] >> *(qi::lit(',') >> expression[phx::push_back(*phx::at_c<0>(*qi::_val), qi::_1)]) >> qi::lit(']')
+            = qi::lit('[') >> args [qi::_val = phx::new_<ArrayLiteral>(qi::_1)] >> qi::lit(']') //= qi::lit('[')[qi::_val = phx::new_<ArrayLiteral>()] >> -(expression[phx::push_back(*phx::at_c<0>(qi::_val), qi::_1)] >> *(qi::lit(',') >> expression[phx::push_back(phx::at_c<0>(*qi::_val), qi::_1)])) >> qi::lit[']']
             ;
 
         empty_array_literal
-            = qi::lit("[") >> qi::lit("]")[qi::_val = phx::new_<ArrayLiteral>()]
+            = qi::lit("[") >> qi::lit("]") [qi::_val = phx::new_<ArrayLiteral>()]
             ;
 
         call_expr
-            = qi::lit('(') >> expression[qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix[phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
+            //= qi::lit('(') >> expression[qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix[phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
+            =  qi::lit('(') >> expression[qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')'
+            | qi::lit('(') >> expression[qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> postfixs [phx::bind(&CallExpression::set_postfixs, qi::_val, qi::_1)]
+            ;
+
+        postfixs
+            %= postfix >> *postfix
             ;
 
         postfix
@@ -372,7 +395,7 @@ struct StoneGrammar
             ;
 
         args
-            = expression >> *(',' >> expression)
+            %= expression >> *(',' >> expression)
             ;
     }
 
@@ -398,8 +421,8 @@ struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, SimpleStatement*() > simple_stmt;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > equal, lowerGreater, shift, addSub, multDivMod;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and,
-        equal, lowerGreater, shift, addSub, multDivMod;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and, equal, lowerGreater, shift, addSub;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > multDivMod;
     qi::symbols<char, BinaryOperator> commaOp, assignOp, orOp, andOp, bitwiseOrOp,bitwiseXorOp, bitwiseAndOp, equalOp,
                                     lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
 
@@ -409,8 +432,11 @@ struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, CallExpression*() > call_expr;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ArrayLiteral*() > array_literal;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ArrayLiteral*() > empty_array_literal;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, IdentifierLiteral*() > identifier_primary;
 
 
+
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, std::vector<Postfix*>() > postfixs;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, Postfix*() > postfix;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, std::vector<Expression*>() > args;
 

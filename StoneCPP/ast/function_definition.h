@@ -11,6 +11,7 @@ class FuncDef : public AST
 {
 public:
     FuncDef(std::string identifier_, std::vector<std::string> params_) : identifier(identifier_), params(params_) {}
+    FuncDef(std::string identifier_): identifier(identifier_) {}
 
     ~FuncDef()
     {

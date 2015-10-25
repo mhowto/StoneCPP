@@ -9,6 +9,7 @@ class Visitor;
 
 class WhileStatement : public Statement {
 public:
+    WhileStatement(Expression* expr) : expr_(expr) {}
     WhileStatement(Expression* expr, std::vector<Statement*> block) : expr_(expr), block_(block) {}
     ~WhileStatement()
     {

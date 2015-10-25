@@ -9,6 +9,4 @@ public:
     virtual ~Literal() = 0;
 };
 
-Literal::~Literal() {}
-
 #endif

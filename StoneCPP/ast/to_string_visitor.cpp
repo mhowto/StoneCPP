@@ -103,16 +103,22 @@ void ToStringVisitor::visit(BinaryOperation& binary_operation)
     std::stringstream oss;
     binary_operation.left_expr()->accept(*this);
     oss << this->string();
-    oss << binary_operation.get_op();
-    binary_operation.right_expr()->accept(*this);
-    oss << this->string();
-    str_ = oss.str();
+    auto op = binary_operation.get_op();
+    if (op != BinaryOperator::NONE) {
+        oss << binary_operation.get_op();
+        binary_operation.right_expr()->accept(*this);
+        oss << this->string();
+        str_ = oss.str();
+    }
 }
 
 void ToStringVisitor::visit(UnaryOperation& unary_operation)
 {
     std::stringstream oss;
-    oss << unary_operation.get_op();
+    auto op = unary_operation.get_op();
+    if (op != UnaryOperator::NONE) {
+        oss << unary_operation.get_op();
+    }
     unary_operation.get_expr()->accept(*this);
     oss << this->string();
     str_ = oss.str();

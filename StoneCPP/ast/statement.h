@@ -9,6 +9,4 @@ public:
     virtual ~Statement() = 0;
 };
 
-Statement::~Statement() {}
-
 #endif

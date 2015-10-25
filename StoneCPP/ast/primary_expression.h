@@ -15,6 +15,4 @@ public:
     virtual void push_postfix(Postfix*) = 0;
 };
 
-PrimaryExpression::~PrimaryExpression() {}
-
 #endif

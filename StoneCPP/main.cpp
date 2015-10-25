@@ -13,7 +13,7 @@ int main() {
     typedef stone_token::iterator_type iterator_type;
     typedef StoneGrammar<iterator_type, stone_token::lexer_def> stone_grammar;
 
-    stone_token tokens;                         
+    stone_token tokens;
     stone_grammar parser(tokens);
 
     // TODO: Your test code here

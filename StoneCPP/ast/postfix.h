@@ -6,7 +6,7 @@
 class Postfix : public AST
 {
 public:
-    virtual ~Postfix() {}
+    virtual ~Postfix() = 0;
 };
 
 #endif

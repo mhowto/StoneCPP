@@ -50,4 +50,4 @@ main.cpp
 #add_library(tinystl ${SOURCE_FILES} ${HEADER_FILES}
 
 add_executable(stone_parser ${SOURCE_FILES} ${HEADER_FILES})
-#target_link_libraries(tc LINK_PUBLIC scanner parser docopt checker)
+target_link_libraries(stone_parser LINK_PUBLIC ast)

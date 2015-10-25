@@ -9,6 +9,4 @@ public:
     virtual ~Expression() = 0;
 };
 
-Expression::~Expression() {}
-
 #endif

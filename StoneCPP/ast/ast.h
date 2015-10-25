@@ -12,5 +12,4 @@ public:
     virtual void accept(Visitor&) = 0;
 };
 
-AST::~AST() {} // must add this
 #endif

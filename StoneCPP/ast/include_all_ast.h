@@ -1,6 +1,13 @@
 #ifndef _INCLUDE_ALL_AST_H
 #define _INCLUDE_ALL_AST_H
 
+#include "ast.h"
+#include "postfix.h"
+#include "expression.h"
+#include "literal.h"
+#include "statement.h"
+#include "primary_expression.h"
+
 #include "if_statement.h"
 #include "while_statement.h"
 #include "simple_statement.h"

@@ -11,6 +11,7 @@ class Visitor;
 class IfStatement : public Statement {
 public:
     IfStatement() = default;
+    IfStatement(Expression* expr) : expr_(expr) {}
     IfStatement(Expression* expr, std::vector<Statement*> if_block) : expr_(expr), if_block_(if_block) {}
     
     IfStatement(Expression* expr, std::vector<Statement*> if_block, std::vector<Statement*> else_block) :
