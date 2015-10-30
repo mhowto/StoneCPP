@@ -1,5 +1,6 @@
 #include "stone_parser.h"
 #include "example.h"
+#include "ast/to_string_visitor.h"
 
 int main() {
     typedef std::string::iterator base_iterator_type;
@@ -28,14 +29,17 @@ int main() {
     std::string::iterator it = str.begin();
     iterator_type iter = tokens.begin(it, str.end());
     iterator_type end = tokens.end();
+    AST *ast;
+    ToStringVisitor printVisitor;
 
-    bool r = qi::phrase_parse(iter, end, parser, qi::in_state("WS")[tokens.self]);
+    bool r = qi::phrase_parse(iter, end, parser, qi::in_state("WS")[tokens.self], ast);
 
     if (r && iter == end)
     {
         std::cout << "-------------------------\n";
         std::cout << "Parsing succeeded\n";
         std::cout << "-------------------------\n";
+        ast->accept(printVisitor);
     }
     else
     {

@@ -340,14 +340,15 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
 
         multDivMod
             //= value[qi::_val = qi::_1] >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
-            = value[qi::_val = phx::new_<BinaryOperation>(BinaryOperator::NONE, qi::_1, nullptr)] >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            //= value[qi::_val = phx::new_<BinaryOperation>(BinaryOperator::NONE, qi::_1, nullptr)] >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            = value >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
             ;
 
         value
             = '-' >> primary[qi::_val = phx::new_<UnaryOperation>(UnaryOperator::MINUS, qi::_1)]
             | ('+' >> primary)[qi::_val = phx::new_<UnaryOperation>(UnaryOperator::PLUS, qi::_1)]
             | ('!' >> primary)[qi::_val = phx::new_<UnaryOperation>(UnaryOperator::NOT, qi::_1)]
-            | (primary)
+            | primary
             ;
 
         primary
@@ -358,14 +359,14 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
             //= qi::lit('[')  >> -(expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)]>> *(qi::lit(',') >> expression [phx::push_back(phx::at_c<0>(qi::_val), qi::_1)])) >> qi::lit[']']
 //            | qi::lit('(') >> expression [qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
             //| tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)]) //| tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
-            | identifier_primary
+            //| identifier_primary
             | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)]
             | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
             | tok.string_literal[qi::_val = phx::new_<StringLiteral>(qi::_1)]
             ;
 
         identifier_primary
-            = tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
+            = tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> -postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
             ;
 
         array_literal
@@ -421,12 +422,13 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, SimpleStatement*() > simple_stmt;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type() > equal, lowerGreater, shift, addSub, multDivMod;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, expression_type*() > equal, lowerGreater, shift, addSub, multDivMod;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and, equal, lowerGreater, shift, addSub;
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > multDivMod;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, AST*() > comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and, equal, lowerGreater, shift, addSub, multDivMod;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer>, BinaryOperation*() > multDivMod;
     qi::symbols<char, BinaryOperator> commaOp, assignOp, orOp, andOp, bitwiseOrOp,bitwiseXorOp, bitwiseAndOp, equalOp,
                                     lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
 
-    qi::rule<Iterator, qi::in_state_skipper<Lexer>, UnaryOperation*() > value;
+    //qi::rule<Iterator, qi::in_state_skipper<Lexer>, UnaryOperation*() > value;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, AST*() > value;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, PrimaryExpression*() > primary;
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, ASTree*() > primary;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, CallExpression*() > call_expr;
