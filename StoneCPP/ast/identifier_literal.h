@@ -4,16 +4,21 @@
 #include "literal.h"
 #include <string>
 #include "postfix.h"
+#include <iostream>
 
 class Visitor;
 
 class IdentifierLiteral : public Literal {
 public:
     IdentifierLiteral() = default;
-    IdentifierLiteral(std::string iden): identifier_name(iden) {}
+    IdentifierLiteral(std::string iden): identifier_name(iden)
+    {
+        std::cout << "literal constructor: " << iden;
+    }
 
     ~IdentifierLiteral()
     {
+        std::cout << "literal destructor";
         for (std::vector<Statement*>::size_type i = 0; i < postfixs.size(); ++i)
         {
             delete postfixs[i];

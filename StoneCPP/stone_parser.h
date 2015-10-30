@@ -246,7 +246,7 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
         */
 
         program
-            = -(class_def | func_def | statement) >> (qi::lit(';') | '\n')
+            %= -(class_def | func_def | statement) >> (qi::lit(';') | '\n')
             ;
 
         class_def
@@ -255,11 +255,11 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
             ;
 
         class_body
-            = '{' >> -member >> *((qi::lit(';') | '\n') >> -member) >> '}'
+            %= '{' >> -member >> *((qi::lit(';') | '\n') >> -member) >> '}'
             ;
 
         member
-            = func_def
+            %= func_def
             | simple_stmt
             ;
             
@@ -278,7 +278,7 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
             ;
 
         statement
-            = if_stmt
+            %= if_stmt
             | while_stmt
             | simple_stmt
             ;
@@ -300,7 +300,7 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
             ;
 
         expression
-            = assign
+            %= assign
             ;
 
         //comma, assign, or_, and_, bitwise_or, bitwise_xor, bitwise_and,
@@ -341,11 +341,11 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
         multDivMod
             //= value[qi::_val = qi::_1] >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
             //= value[qi::_val = phx::new_<BinaryOperation>(BinaryOperator::NONE, qi::_1, nullptr)] >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
-            = value >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
+            %= value >> -(multDivModOp >> value)[qi::_val = phx::new_<BinaryOperation>(qi::_1, qi::_val, qi::_2)]
             ;
 
         value
-            = '-' >> primary[qi::_val = phx::new_<UnaryOperation>(UnaryOperator::MINUS, qi::_1)]
+            %= '-' >> primary[qi::_val = phx::new_<UnaryOperation>(UnaryOperator::MINUS, qi::_1)]
             | ('+' >> primary)[qi::_val = phx::new_<UnaryOperation>(UnaryOperator::PLUS, qi::_1)]
             | ('!' >> primary)[qi::_val = phx::new_<UnaryOperation>(UnaryOperator::NOT, qi::_1)]
             | primary
