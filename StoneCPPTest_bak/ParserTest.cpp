@@ -32,7 +32,7 @@ namespace StoneCPPTest
         stone_token tokens;
         stone_grammar* parser;                      // our parser
         ToStringVisitor printer;
-        AST *ast;
+
 
     public:
         TEST_METHOD_INITIALIZE(setUp)
@@ -48,27 +48,16 @@ namespace StoneCPPTest
             delete parser;
         }
 
-        TEST_METHOD(ASSIGN_OPERATION)
+        TEST_METHOD(TestMethod1)
         {
-            std::string str ="even = 0\n";
+            // TODO: Your test code here
+            std::string str =R"(even = 0
+)";
+//odd = 0
+//i = 1
 
-            std::string::iterator it = str.begin();
-            iterator_type iter = tokens.begin(it, str.end());
-            iterator_type end = tokens.end();
-
-
-            bool r = qi::phrase_parse(iter, end, *parser, qi::in_state("WS")[tokens.self], ast);
-
-            Assert::AreEqual(true, r);
-            ast->accept(printer);
-            Logger::WriteMessage(printer.string().c_str());
-            Assert::AreEqual("even=0", printer.string().c_str());
-        }
-
-        TEST_METHOD(CLASS_DEF)
-        {
-            std::string str = "class iden1 extends cla2 {odd; egg;}\n";
-
+            // At this point we generate the iterator pair used to expose the
+            // tokenized input stream.
             std::string::iterator it = str.begin();
             iterator_type iter = tokens.begin(it, str.end());
             iterator_type end = tokens.end();
@@ -78,10 +67,20 @@ namespace StoneCPPTest
 
             bool r = qi::phrase_parse(iter, end, *parser, qi::in_state("WS")[tokens.self], ast);
 
-            //Assert::AreEqual(true, r);
-            ast->accept(printer);
-            Logger::WriteMessage(printer.string().c_str());
-            Assert::AreEqual("even= 0", printer.string().c_str());
+            if (r && iter == end)
+            {
+                std::cout << "-------------------------\n";
+                std::cout << "Parsing succeeded\n";
+                std::cout << "-------------------------\n";
+                ast->accept(printer);
+                assert("even=0", printer.string());
+            }
+            else
+            {
+                std::cout << "-------------------------\n";
+                std::cout << "Parsing failed\n";
+                std::cout << "-------------------------\n";
+            }
         }
 	};
 }

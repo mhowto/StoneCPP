@@ -4,6 +4,7 @@
 #include "ast.h"
 #include <string>
 #include <vector>
+#include <iostream>
 
 class Visitor;
 
@@ -13,7 +14,9 @@ public:
     //typedef boost::variant<Expression*, FuncDef*> member_type;
     typedef AST* member_type;
 
-    ClassDef(std::string iden) : identifier(iden) {}
+    ClassDef(std::string iden) : identifier(iden) {
+        std::cout << "class cons";
+    }
     ClassDef(std::string iden, std::string ext_iden) : identifier(iden), extended_identifier(ext_iden) {}
 
     ~ClassDef()

@@ -1,6 +1,7 @@
 #include "stone_parser.h"
 #include "example.h"
 #include "ast/to_string_visitor.h"
+#include <iostream>
 
 int main() {
     typedef std::string::iterator base_iterator_type;
@@ -21,8 +22,12 @@ int main() {
     //std::string str(read_from_file("while_state.input"));
     //std::string str = "even || \"kkk\"\n";
     std::string str = "even = 3\n";
+    //std::string str = "if even {odd}";
     //std::string str = "even || 0\n";
     //std::string str = "even = 0 odd =0 i =1";
+    //std::string str = "class iden1 extends cla2 {odd; egg}\n";
+    //std::string str = "class iden1 {odd; egg}\n";
+    //std::string str = "class iden1 \n";
     //odd = 0
 	//i =1
 
@@ -34,12 +39,15 @@ int main() {
 
     bool r = qi::phrase_parse(iter, end, parser, qi::in_state("WS")[tokens.self], ast);
 
+        ast->accept(printVisitor);
+        std::cout << printVisitor.string() << '\n';
     if (r && iter == end)
     {
         std::cout << "-------------------------\n";
         std::cout << "Parsing succeeded\n";
         std::cout << "-------------------------\n";
         ast->accept(printVisitor);
+        std::cout << printVisitor.string() << '\n';
     }
     else
     {

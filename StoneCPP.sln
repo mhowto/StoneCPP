@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StoneCPP", "StoneCPP\StoneCPP.vcxproj", "{96DECF88-D017-4D0B-9D67-EFA56356F064}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StoneCPPTest", "StoneCPPTest\StoneCPPTest.vcxproj", "{136DB63A-79BC-4229-BDB1-AA9FC3495C09}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StoneCPPTest", "StoneCPPTest\StoneCPPTest.vcxproj", "{82614B02-30EB-44A4-B431-353CE772088A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,28 +23,16 @@ Global
 		{96DECF88-D017-4D0B-9D67-EFA56356F064}.Release|x64.Build.0 = Release|x64
 		{96DECF88-D017-4D0B-9D67-EFA56356F064}.Release|x86.ActiveCfg = Release|Win32
 		{96DECF88-D017-4D0B-9D67-EFA56356F064}.Release|x86.Build.0 = Release|Win32
-		{136DB63A-79BC-4229-BDB1-AA9FC3495C09}.Debug|x64.ActiveCfg = Debug|x64
-		{136DB63A-79BC-4229-BDB1-AA9FC3495C09}.Debug|x64.Build.0 = Debug|x64
-		{136DB63A-79BC-4229-BDB1-AA9FC3495C09}.Debug|x86.ActiveCfg = Debug|Win32
-		{136DB63A-79BC-4229-BDB1-AA9FC3495C09}.Debug|x86.Build.0 = Debug|Win32
-		{136DB63A-79BC-4229-BDB1-AA9FC3495C09}.Release|x64.ActiveCfg = Release|x64
-		{136DB63A-79BC-4229-BDB1-AA9FC3495C09}.Release|x64.Build.0 = Release|x64
-		{136DB63A-79BC-4229-BDB1-AA9FC3495C09}.Release|x86.ActiveCfg = Release|Win32
-		{136DB63A-79BC-4229-BDB1-AA9FC3495C09}.Release|x86.Build.0 = Release|Win32
+		{82614B02-30EB-44A4-B431-353CE772088A}.Debug|x64.ActiveCfg = Debug|x64
+		{82614B02-30EB-44A4-B431-353CE772088A}.Debug|x64.Build.0 = Debug|x64
+		{82614B02-30EB-44A4-B431-353CE772088A}.Debug|x86.ActiveCfg = Debug|Win32
+		{82614B02-30EB-44A4-B431-353CE772088A}.Debug|x86.Build.0 = Debug|Win32
+		{82614B02-30EB-44A4-B431-353CE772088A}.Release|x64.ActiveCfg = Release|x64
+		{82614B02-30EB-44A4-B431-353CE772088A}.Release|x64.Build.0 = Release|x64
+		{82614B02-30EB-44A4-B431-353CE772088A}.Release|x86.ActiveCfg = Release|Win32
+		{82614B02-30EB-44A4-B431-353CE772088A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://mhowto.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = StoneCPP\\StoneCPP.vcxproj
-		SccProjectName1 = StoneCPP
-		SccLocalPath1 = StoneCPP
-		SccProjectUniqueName2 = StoneCPPTest\\StoneCPPTest.vcxproj
-		SccProjectName2 = StoneCPPTest
-		SccLocalPath2 = StoneCPPTest
 	EndGlobalSection
 EndGlobal

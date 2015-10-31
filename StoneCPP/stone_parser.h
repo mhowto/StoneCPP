@@ -2,6 +2,8 @@
 #define __STONE_PARSER_H
 
 #define BOOST_SPIRIT_USE_PHOENIX_V3
+#define BOOST_VARIANT_USE_RELAXED_GET_BY_DEFAULT
+#define BOOST_SPIRIT_DEBUG
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -38,8 +40,10 @@ struct StoneToken : lex::lexer<Lexer>
     {
         // define the tokens to match
         identifier = "[a-zA-Z_][a-zA-Z0-9_]*";
+        //identifier = "(?!class|extends|def|if|while|else)[a-zA-Z_][a-zA-Z0-9_]*";
         number = "[0-9]+";
         string_literal = R"(\"(\"|\\|\n|[^"])*\")";
+        reserved = "class|extends|def|if|while|else";
 
         // !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
         // associate the tokens and the token set with the lexer
@@ -55,7 +59,7 @@ struct StoneToken : lex::lexer<Lexer>
             ;
 
         //this->self += number | if_ | else_ | while_ | identifier;
-        this->self += number | identifier | string_literal;
+        this->self += number | identifier | string_literal | reserved;
 
         // define the whitespace to ignore (spaces, tabs, and C-style 
         // comments)
@@ -67,6 +71,7 @@ struct StoneToken : lex::lexer<Lexer>
     }
 
     lex::token_def<std::string> identifier;
+    lex::token_def<std::string> reserved;
     lex::token_def<std::string> string_literal;
     lex::token_def<unsigned int> number;
 };
@@ -192,6 +197,14 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
             ("%", BinaryOperator::MODULO)
             ;
 
+        keywords.add
+            ("class")
+            ("def")
+            ("if")
+            ("else")
+            ("while")
+            ;
+
         /* Grammar for Stone:
         primary    : "(" expr ")" | NUMBER | IDENTIFIER | STRING
         factor     : "-" primary | primary
@@ -247,12 +260,19 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
 
         program
             %= -(class_def | func_def | statement) >> (qi::lit(';') | '\n')
+            //%= class_def >> (qi::lit(';') | '\n')
+            //%= -class_def >> (qi::lit(';') | '\n')
+            //| -func_def >> (qi::lit(';') | '\n')
+            //| 
             ;
 
         class_def
             //= qi::lit("class") >> tok.identifier[qi::_val = phx::new_<ClassDef>(qi::_1)] >> -(qi::lit("extends") >> tok.identifier[boost::bind(&ClassDef::set_extended_identifier, qi::_val, _1)]/*[qi::_val->set_extended_identifier(qi::_1)]*/) >> class_body[boost::bind(&ClassDef::set_members, qi::_val, _1)]/*[qi::_val->set_members(qi::_1)]*/
-            = qi::lit("class") >> tok.identifier[qi::_val = phx::new_<ClassDef>(qi::_1)] >> -(qi::lit("extends") >> tok.identifier[phx::bind(&ClassDef::set_extended_identifier, qi::_val, qi::_1)]/*[qi::_val->set_extended_identifier(qi::_1)]*/) >> class_body[phx::bind(&ClassDef::set_members, qi::_val, qi::_1)]/*[qi::_val->set_members(qi::_1)]*/
+            //= "class" >> tok.identifier [qi::_val = phx::new_<ClassDef>(qi::_1)] >> -(qi::lit("extends") >> tok.identifier[phx::bind(&ClassDef::set_extended_identifier, qi::_val, qi::_1)]/*[qi::_val->set_extended_identifier(qi::_1)]*/) >> class_body[phx::bind(&ClassDef::set_members, qi::_val, qi::_1)]/*[qi::_val->set_members(qi::_1)]*/
+            = qi::lit("class") >> tok.identifier [qi::_val = phx::new_<ClassDef>(qi::_1)] 
             ;
+
+        //qi::lit("class") >> tok.identifier >> -(qi::lit("extends") >> tok.identifier) >> class_body
 
         class_body
             %= '{' >> -member >> *((qi::lit(';') | '\n') >> -member) >> '}'
@@ -280,23 +300,24 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
         statement
             %= if_stmt
             | while_stmt
-            | simple_stmt
+            //| simple_stmt
             ;
 
         if_stmt
             //= "if" >> expression [qi::_val = phx::new_<IfStatement>(qi::_1)] >> block [boost::bind(&IfStatement::set_if_block, qi::_val, _1)]/*[qi::_val->set_if_ block(qi::_1)]*/ >> -("else" >> block [boost::bind(&IfStatement::set_else_block, qi::_val, _1)]/*[qi::_val->set_else_block(qi::_1)]*/)
-            = "if" >> expression [qi::_val = phx::new_<IfStatement>(qi::_1)] >> block [phx::bind(&IfStatement::set_if_block, qi::_val, qi::_1)]/*[qi::_val->set_if_ block(qi::_1)]*/ >> -("else" >> block [phx::bind(&IfStatement::set_else_block, qi::_val, qi::_1)]/*[qi::_val->set_else_block(qi::_1)]*/)
+            = qi::lit("if") > expression [qi::_val = phx::new_<IfStatement>(qi::_1)] >> block [phx::bind(&IfStatement::set_if_block, qi::_val, qi::_1)]/*[qi::_val->set_if_ block(qi::_1)]*/ >> -("else" >> block [phx::bind(&IfStatement::set_else_block, qi::_val, qi::_1)]/*[qi::_val->set_else_block(qi::_1)]*/)
             ;
 
         while_stmt
             //= "while" >> expression [qi::_val = phx::new_<WhileStatement>(qi::_1)] >> block [boost::bind(&WhileStatement::set_block, qi::_val, _1)]//[qi::_val->set_block(qi::_1)]
-            = "while" >> expression [qi::_val = phx::new_<WhileStatement>(qi::_1)] >> block [phx::bind(&WhileStatement::set_block, qi::_val, qi::_1)]//[qi::_val->set_block(qi::_1)]
+            = qi::lit("while") > expression [qi::_val = phx::new_<WhileStatement>(qi::_1)] >> block [phx::bind(&WhileStatement::set_block, qi::_val, qi::_1)]//[qi::_val->set_block(qi::_1)]
             ;
 
         simple_stmt
             //= expression >> -(expression >> *(qi::lit(',') >> expression))
             //= expression[qi::_val = phx::new_<SimpleStatement>(qi::_1)] >> -args[boost::bind(&SimpleStatement::set_args, qi::_val, _1)]// phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)];
-            = expression[qi::_val = phx::new_<SimpleStatement>(qi::_1)] >> -args[phx::bind(&SimpleStatement::set_args, qi::_val, qi::_1)]// phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)];
+            //= expression[qi::_val = phx::new_<SimpleStatement>(qi::_1)] >> -args[phx::bind(&SimpleStatement::set_args, qi::_val, qi::_1)]// phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)];
+            = expression[qi::_val = phx::new_<SimpleStatement>(qi::_1)]
             ;
 
         expression
@@ -360,14 +381,21 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
 //            | qi::lit('(') >> expression [qi::_val = phx::new_<CallExpression>(qi::_1)] >> ')' >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)])
             //| tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> *(postfix [phx::push_back(*phx::at_c<1>(qi::_val), qi::_1)]) //| tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
             //| identifier_primary
-            | tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)]
+            | identifier [qi::_val = phx::new_<IdentifierLiteral>(qi::_1)]
+            //| tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)]
             | tok.number[qi::_val = phx::new_<NumberLiteral>(qi::_1)]
             | tok.string_literal[qi::_val = phx::new_<StringLiteral>(qi::_1)]
             ;
 
         identifier_primary
-            = tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> -postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
+            //= tok.identifier[qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> -postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
+            //= identifier [qi::_val = phx::new_<IdentifierLiteral>(qi::_1)] >> -postfixs [phx::bind(&IdentifierLiteral::set_postfixs, qi::_val, qi::_1)]
+            = identifier [qi::_val = phx::new_<IdentifierLiteral>(qi::_1)]
             ;
+
+        identifier
+            //%= qi::lexeme[(qi::char_("a-zA-Z_") >> *qi::char_("0-9a-zA-Z_")) - keywords];
+            = qi::lexeme[(qi::char_("a-zA-Z_") >> *qi::char_("0-9a-zA-Z_"))];
 
         array_literal
             //= qi::lit('[') >> expression[qi::_val = phx::new_<ArrayLiteral>(qi::_1)] >> *(qi::lit(',') >> expression[phx::push_back(*phx::at_c<0>(*qi::_val), qi::_1)]) >> qi::lit(']')
@@ -398,9 +426,13 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
         args
             %= expression >> *(',' >> expression)
             ;
+
+        BOOST_SPIRIT_DEBUG_RULE(identifier);
+        BOOST_SPIRIT_DEBUG_RULE(identifier_primary);
     }
 
     //typedef boost::variant<unsigned int, std::string> expression_type;
+
 
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, AST*() > program;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ClassDef*() > class_def;
@@ -427,6 +459,8 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
     qi::symbols<char, BinaryOperator> commaOp, assignOp, orOp, andOp, bitwiseOrOp,bitwiseXorOp, bitwiseAndOp, equalOp,
                                     lowerGreaterOp, shiftOp, addSubOp, multDivModOp;
 
+    qi::symbols<> keywords;
+
     //qi::rule<Iterator, qi::in_state_skipper<Lexer>, UnaryOperation*() > value;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, AST*() > value;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, PrimaryExpression*() > primary;
@@ -435,6 +469,7 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ArrayLiteral*() > array_literal;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, ArrayLiteral*() > empty_array_literal;
     qi::rule<Iterator, qi::in_state_skipper<Lexer>, IdentifierLiteral*() > identifier_primary;
+    qi::rule<Iterator, qi::in_state_skipper<Lexer>, std::string() > identifier;
 
 
 

@@ -11,10 +11,7 @@ class Visitor;
 class IdentifierLiteral : public Literal {
 public:
     IdentifierLiteral() = default;
-    IdentifierLiteral(std::string iden): identifier_name(iden)
-    {
-        std::cout << "literal constructor: " << iden;
-    }
+    IdentifierLiteral(std::string iden): identifier_name(iden) {}
 
     ~IdentifierLiteral()
     {

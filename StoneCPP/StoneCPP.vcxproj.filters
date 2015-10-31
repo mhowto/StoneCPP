@@ -99,10 +99,14 @@
     <ClInclude Include="ast\include_all_ast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="while_state.input" />
     <None Include="ClassDiagram.cd" />
+    <None Include="scanner.ll" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="deprected\old_lexer.txt" />
