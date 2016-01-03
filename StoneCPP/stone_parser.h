@@ -427,8 +427,8 @@ template <typename Iterator, typename Lexer> struct StoneGrammar
             %= expression >> *(',' >> expression)
             ;
 
-        BOOST_SPIRIT_DEBUG_RULE(identifier);
-        BOOST_SPIRIT_DEBUG_RULE(identifier_primary);
+        //BOOST_SPIRIT_DEBUG_RULE(identifier);
+        //BOOST_SPIRIT_DEBUG_RULE(identifier_primary);
     }
 
     //typedef boost::variant<unsigned int, std::string> expression_type;
